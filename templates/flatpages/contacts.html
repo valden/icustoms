@@ -1,0 +1,20 @@
+<!-- templates/flatpages/contacts.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ flatpage.title }}{% endblock title %}
+
+{% block pageheader %}
+    {{ flatpage.title }}
+{% endblock pageheader %}
+
+{% block breadcrumb %}
+    <li class="active"><a href="{% url 'contacts' %}"><i class="fa fa-envelope"></i> {% trans "Контакти" %}</a></li>
+{% endblock breadcrumb %}
+
+{% block content %}
+    {{ flatpage.content }}
+{% endblock %}

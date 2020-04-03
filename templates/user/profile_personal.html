@@ -1,0 +1,163 @@
+<!-- templates/declare/profile_personal.html -->
+
+{% load static %}
+{% load i18n %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load crispy_forms_tags %}
+
+
+<div class="m-3">
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
+</div>
+
+
+{% comment %} {% block tabcontent %}
+    <!-- Profile form -->
+    <form enctype="multipart/form-data" class="form-horizontal m-3" method="post">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"><b>{{ user_form.first_name.label }}</b></label>
+            <div class="col-sm-9">
+                {{ user_form.first_name|add_class:'form-control'|attr:"type:text" }}
+            </div>
+            {% if user_form.first_name.help_text %}
+                <small class='form-text text-muted'>{{ user_form.first_name.help_text }}</small>
+            {% endif %}
+            {% for error in user_form.first_name.errors %}
+                <span class="form-text text-danger"><small>{{ error }}</small></span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"><b>{{ profile_form.middle_name.label }}</b></label>
+            <div class="col-sm-9">
+                {{ profile_form.middle_name|add_class:'form-control'|attr:"type:text" }}
+            </div>
+            {% if profile_form.middle_name.help_text %}
+                <small class='form-text text-muted'>{{ profile_form.middle_name.help_text }}</small>
+            {% endif %}
+            {% for error in profile_form.middle_name.errors %}
+                <span class="form-text text-danger"><small>{{ error }}</small></span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"><b>{{ user_form.last_name.label }}</b></label>
+            <div class="col-sm-9">
+                {{ user_form.last_name|add_class:'form-control'|attr:"type:text" }}
+            </div>
+            {% if user_form.last_name.help_text %}
+                <small class='form-text text-muted'>{{ user_form.last_name.help_text }}</small>
+            {% endif %}
+            {% for error in user_form.last_name.errors %}
+                <span class="form-text text-danger"><small>{{ error }}</small></span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"><b>{{ user_form.email.label }}</b></label>
+            <div class="col-sm-9">										
+                {{ user_form.email|add_class:'form-control'|attr:"type:email" }}										
+            </div>
+            {% if user_form.email.help_text %}
+                <small class='form-text text-muted'>{{ user_form.email.help_text }}</small>
+            {% endif %}
+            {% for error in user_form.email.errors %}
+                <span class="form-text text-danger"><small>{{ error }}</small></span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label" data-toggle="tooltip" title="{% trans "Країна постійного проживання" %}"><b>{{ profile_form.residence.label }} <sup>?</sup></b></label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-globe"></i></div>
+                    </div>
+                    {{ profile_form.residence|add_class:'form-control'|attr:'type:text' }}											
+                </div>
+                {% if profile_form.residence.help_text %}
+                    <small class='form-text text-muted'>{{ profile_form.residence.help_text }}</small>
+                {% endif %}
+                {% for error in profile_form.residence.errors %}
+                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label" data-toggle="tooltip" title="{% trans "Країна громадянства/підданства" %}"><b>{{ profile_form.nationality.label }} <sup>?</sup></b></label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-globe"></i></div>
+                    </div>
+                    {{ profile_form.nationality|add_class:'form-control'|attr:"type:text" }}
+                </div>
+                {% if profile_form.nationality.help_text %}
+                    <small class='form-text text-muted'>{{ profile_form.nationality.help_text }}</small>
+                {% endif %}
+                {% for error in profile_form.nationality.errors %}
+                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"><b>{{ profile_form.birthday.label }}</b></label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></i></div>
+                    </div>
+                    {{ profile_form.birthday|add_class:'form-control datepicker'|attr:'type:text' }}											
+                </div>
+                {% if profile_form.birthday.help_text %}
+                    <small class='form-text text-muted'>{{ profile_form.birthday.help_text }}</small>
+                {% endif %}
+                {% for error in profile_form.birthday.errors %}
+                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3"><b>{{ profile_form.image.label }}</b></label>
+            <div class="col-sm-5">                
+                {{ profile_form.image }}
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                {{ profile_form.terms|add_class:'custom-control-input'|attr:'type:checkbox'|attr:'id:termCheck' }}
+                <label class="custom-control-label" for="termCheck">{% trans "Я ознайомився(лась) і погоджуюсь з " %} <a href="#">{% trans "правилами та умовами" %}</a></label>                
+                {% if profile_form.terms.help_text %}
+                    <small class='form-text text-muted'>{{ profile_form.terms.help_text }}</small>
+                {% endif %}
+                {% for error in profile_form.terms.errors %}
+                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                {% endfor %}
+            </div>        
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">                
+            </div>
+            <div class="col-sm-2">                
+                <button type="submit" class="btn btn-sm btn-primary float-right">{% trans "Зберегти" %}</button>
+            </div>
+        
+        </div>
+    </form>
+    <!-- /.form -->
+
+{% endblock tabcontent %} {% endcomment %}

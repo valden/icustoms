@@ -1,0 +1,23 @@
+
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}        
+
+
+        <h1>Documents</h1>
+<ul>
+{% for doc in documents %}
+    <li>{{ doc.doc_name }} - {{ doc.doc_date|date }}</li>
+    
+{% empty %}
+    <li>No docs yet.</li>
+{% endfor %}
+</ul>
+<hr>
+    <form method='POST'>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
