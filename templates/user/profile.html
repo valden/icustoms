@@ -15,118 +15,79 @@
                   
 {% block content %}
 
-  <div class="row">
-    <div class="col-md-3">
+	<div class="row">
+		<div class="col-md-3">
 
-      <!-- Profile Image -->
-      <div class="card card-primary card-outline">
-        <div class="card-body box-profile">
-          <div class="text-center">
-            {% if user.image %}
-                <img src="{{ user.image.url }}" class="profile-user-img img-fluid img-circle" alt="User Avatar">
-            {% else %}
-                <img src="{% static 'dist/img/avatar.png' %}" class="profile-user-img img-fluid img-circle" alt="Default Avatar">
-            {% endif %}
-          </div>
+			<!-- Profile Image -->
+			<div class="card card-primary card-outline elevation-3">
+				<div class="card-body box-profile">
+				<div class="text-center">
+					{% if user.image %}
+						<img src="{{ user.image.url }}" class="profile-user-img img-fluid img-circle" alt="User Avatar">
+					{% else %}
+						<img src="{% static 'dist/img/avatar.png' %}" class="profile-user-img img-fluid img-circle" alt="Default Avatar">
+					{% endif %}
+				</div>
 
-          <h3 class="profile-username text-center">
-              {% if user.get_full_name %}
-                  {{ user.get_full_name }}
-              {% else %}
-                  {{ user.username }}
-              {% endif %}
-          </h3>
+				<h3 class="profile-username text-center">
+					{% if user.get_full_name %}
+						{{ user.get_full_name }}
+					{% else %}
+						{{ user.username }}
+					{% endif %}
+				</h3>
 
-          <ul class="list-group list-group-unbordered mb-3">
-            <li class="list-group-item">
-              <i class="fa fa-file-invoice"></i>
-              <b>{% trans "Декларації" %}</b> <a class="float-right">37</a>
-            </li>
-            <li class="list-group-item">
-              <i class="fa fa-file-alt"></i>
-              <b>{% trans "Публікації" %}</b> <a class="float-right">1,322</a>
-            </li>
-            <li class="list-group-item">
-              <i class="fa fa-comment-dots"></i>
-              <b>{% trans "Коментарі" %}</b> <a class="float-right">543</a>
-            </li>
-            <li class="list-group-item">
-              <i class="fa fa-thumbs-up"></i>
-              <b>{% trans "Популярність" %}</b> <a class="float-right">13,287</a>
-            </li>
-          </ul>
+				<ul class="list-group list-group-unbordered mb-3">
+					<li class="list-group-item">
+						<i class="fa fa-file-invoice"></i>
+						<b class="ml-1">{% trans "Декларації" %}</b> <a class="float-right">37</a>
+					</li>
+					<li class="list-group-item">
+						<i class="fa fa-file-alt"></i>
+						<b class="ml-1">{% trans "Публікації" %}</b> <a class="float-right">1,322</a>
+					</li>
+					<li class="list-group-item">
+						<i class="fa fa-comment-dots"></i>
+						<b class="ml-1">{% trans "Коментарі" %}</b> <a class="float-right">543</a>
+					</li>
+					<li class="list-group-item">
+						<i class="fa fa-thumbs-up"></i>
+						<b class="ml-1">{% trans "Популярність" %}</b> <a class="float-right">13,287</a>
+					</li>
+				</ul>
 
-          <a href="{% url 'account_change_password' %}" class="btn btn-sm btn-danger btn-block"><b>{% trans "Змінити пароль" %}</b></a>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-9">
-      <div class="card">
-        <div class="card-header p-2">
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link active" href="#personal" data-toggle="tab">
-                {% trans "Персональне" %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#documents" data-toggle="tab">
-                {% trans "Документи" %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#vehicles" data-toggle="tab">
-                {% trans "Транспорт" %}
-              </a>
-            </li>
-          </ul>
-        </div><!-- /.card-header -->
-        <div class="card-body">
-          <div class="tab-content">
-            <div class="active tab-pane" id="personal">
-              {% include 'user/profile_personal.html' %}
-            </div>
-            <!-- /.tab-pane -->
-            
-            <div class="tab-pane" id="documents">
-              {% include 'user/profile_documents.html' %}
-            </div>
-            <!-- /.tab-pane -->
+				<a href="{% url 'account_change_password' %}" class="btn btn-sm btn-danger btn-block"><b>{% trans "Змінити пароль" %}</b></a>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
+		<!-- /.col -->
+		<div class="col-md-9">
+			{% block profile_tabs %}
+			{% endblock profile_tabs %}
+		</div>
+		<!-- /.col -->
+	</div>
+	<!-- /.row -->
 
-            <div class="tab-pane" id="vehicles">
-              {% include 'user/profile_vehicles.html' %}
-            </div>
-            <!-- /.tab-pane -->
-          </div>
-          <!-- /.tab-content -->
-        </div><!-- /.card-body -->
-      </div>
-      <!-- /.nav-tabs-custom -->
-    </div>
-    <!-- /.col -->
-  </div>
-  <!-- /.row -->
-
-  {% block JS %}
-    <!-- Datepicker -->
-    <script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
-    <script src="{% static 'plugins/datepicker/locales/bootstrap-datepicker.ua.js' %}" charset="UTF-8"></script>
-    
-    <!-- Page script -->
-    <script>
-      $(function () {
-        //Date picker
-        $.fn.datepicker.defaults.format = "dd/mm/yyyy";
-        $('.datepicker').datepicker({
-          autoclose: true,
-          uiLibrary: 'bootstrap4',
-          language	: 'ua'
-        });
-      });
-    </script>
-  {% endblock JS %}
+	{% block JS %}
+		<!-- Datepicker -->
+		<script src="{% static "plugins/datepicker/bootstrap-datepicker.js" %}"></script>
+		<script src="{% static 'plugins/datepicker/locales/bootstrap-datepicker.ua.js' %}" charset="UTF-8"></script>
+		
+		<!-- Page script -->
+		<script>
+			$(function () {
+				//Date picker
+				$.fn.datepicker.defaults.format = "dd/mm/yyyy";
+				$('.datepicker').datepicker({
+					autoclose: true,
+					uiLibrary: 'bootstrap4',
+					language	: 'ua'
+				});
+			});
+		</script>
+	{% endblock JS %}
 
 {% endblock content %}                

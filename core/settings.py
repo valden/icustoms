@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django_cleanup',
 
     # Local apps
-    'user',
+    'user.apps.UserConfig',
 
 ]
 
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'icustoms.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'icustoms.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database

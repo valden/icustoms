@@ -1,12 +1,141 @@
-
+<!-- templates/user/profile_vehicles.html -->
+{% extends 'user/profile.html' %}
 
 {% load static %}
 {% load i18n %}
-        
+{% load crispy_forms_tags %}
 
 
-    <div class="tab-pane" id="timeline">
-    <!-- The settings -->
-        
+{% block profile_tabs %}
+    <div class="card elevation-3">
+        <div class="card-header p-2">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">
+                        {% trans "Персональне" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile_documents' %}">
+                        {% trans "Документи" %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active btn-secondary" href="#vehicles" data-toggle="tab">
+                        {% trans "Транспорт" %}
+                    </a>
+                </li>
+            </ul>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+			<div class="tab-content">				
+				<div class="active tab-pane" id="vehicles">
+					<div class="m-1">
+                        <div class='card'>
+                            <div class='card-header'>
+                                <h1 class='card-title'>
+                                    {% trans "Транспортні засоби особистого користування" %}    
+                                </h1>
+                                <div class='card-tools'>
+                                    <a  class='btn btn-sm btn-secondary'
+                                        href={% url 'profile_vehicle_create' %}
+                                        title={% trans "Створити" %}>
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class='card-body table-responsive p-0'>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px"><i class="fa fa-ellipsis-v"></th>
+                                            <th>{% trans "Марка" %}</th>
+                                            <th>{% trans "Рік випуску" %}</th>
+                                            <th>{% trans "Об'єм двигуна" %}</th>
+                                            <th>{% trans "Кузов №" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for auto in object_list %}
+                                            <tr>
+                                                <td style="width: 40px">
+                                                    <a  class="btn btn-sm btn-secondary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                        <i class="fa fa-tools" style="color:white"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" 
+                                                            href="{% url 'profile_vehicle_update' pk=auto.pk %}">
+                                                            {% trans "Редагувати" %}
+                                                        </a>
+                                                        <a class="dropdown-item" 
+                                                            href="{% url 'profile_vehicle_delete' pk=auto.pk %}">
+                                                            {% trans "Видалити" %}
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>{{ auto.auto_name }}</td>
+                                                <td>{{ auto.auto_year }}</td>
+                                                <td>{{ auto.auto_engine }}</td>
+                                                <td>{{ auto.auto_vin }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div> 
+                            {% if not object_list %}
+                                <div class='card-footer'>                                
+                                        <p>{% trans "Транспортні засоби відсутні" %}</p>                                
+                                </div>
+                            {% endif %}
+                            {% if is_paginated %}
+                                <div class='card-footer'>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination float-right">
+                                            {% if page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a  class="page-link"
+                                                        href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                                        aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                            {% for page in page_obj.paginator.page_range %}
+                                                {% if page_obj.number == page %}
+                                                    <li class="page-item active" aria-current="page">
+                                                        <span   class="page-link"
+                                                                style=" background-color: gray; 
+                                                                        border-color: gray;">
+                                                                {{ page }}
+                                                            <span class="sr-only">(current)</span>
+                                                        </span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if page_obj.has_next %}
+                                                <li class="page-item">
+                                                    <a  class="page-link"
+                                                        href="{{ request.path }}?page={{ page_obj.next_page_number }}"
+                                                        aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            {% endif %}
+                        </div> 
+                    </div>
+				</div>
+				<!-- /.tab-pane -->
+			</div>
+			<!-- /.tab-content -->
+        </div><!-- /.card-body -->
     </div>
-    <!-- /.tab-pane -->
+    <!-- /.nav-tabs-custom -->
+{% endblock profile_tabs %}

@@ -1,21 +1,22 @@
-<!-- templates/user/profile_personal.html -->
+<!-- templates/user/profile_documents.html -->
 {% extends 'user/profile.html' %}
 
 {% load static %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+
 {% block profile_tabs %}
     <div class="card elevation-3">
         <div class="card-header p-2">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link active btn-secondary" href="#personal" data-toggle="tab">
+                    <a class="nav-link" href="{% url 'profile' %}">
                         {% trans "Персональне" %}
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile_documents' %}">
+                    <a class="nav-link active btn-secondary" href="#documents" data-toggle="tab">
                         {% trans "Документи" %}
                     </a>
                 </li>
@@ -27,13 +28,14 @@
             </ul>
         </div><!-- /.card-header -->
         <div class="card-body">
-			<div class="tab-content">
-				<div class="active tab-pane" id="personal">				
-					<div class="m-3">
-                        <form enctype="multipart/form-data" method="post">
+			<div class="tab-content">				
+				<div class="active tab-pane" id="documents">
+					<div class="m-1">
+                        <h4>{% trans "Редагування документа" %}</h4>
+                        <form method='post'>
                             {% csrf_token %}
                             {% crispy form %}
-                        </form>
+                        </form> 
                     </div>
 				</div>
 				<!-- /.tab-pane -->
