@@ -88,7 +88,7 @@ class PostListView(FilterView):
     topic = None
 
     def get(self, request, *args, **kwargs):
-        if self.kwargs['topic'] == None:
+        if self.kwargs['topic'] is None:
             self.topic = Topic.objects.first()
         else:
             self.topic = Topic.objects.get(pk=self.kwargs['topic'])
@@ -113,7 +113,7 @@ class PostCreateView(SuccessMessageMixin, CreateView):
     success_message = _('Публікацію успішно створено')
 
     def get(self, request, *args, **kwargs):
-        if self.kwargs['topic'] == None:
+        if self.kwargs['topic'] is None:
             topic = Topic.objects.first()
         else:
             topic = Topic.objects.get(pk=self.kwargs['topic'])
@@ -126,7 +126,7 @@ class PostCreateView(SuccessMessageMixin, CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        if self.kwargs['topic'] == None:
+        if self.kwargs['topic'] is None:
             topic = Topic.objects.first()
         else:
             topic = Topic.objects.get(pk=self.kwargs['topic'])
