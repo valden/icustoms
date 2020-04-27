@@ -1,0 +1,267 @@
+<!-- templates/post-detail.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block head %}
+    {{ form.media }}
+{% endblock head %}
+
+{% block pageheader %}
+  {% trans "Форум" %}
+{% endblock pageheader %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header py-0 px-3 text-white bg-dark">
+            <div class="row">
+                <div class="col">
+                    <h4>{% trans 'Публікація' %}</h4>
+                </div>
+                <div class="col p-1">
+                    <div class="btn-toolbar justify-content-end"
+                            role="toolbar"
+                            aria-label="Toolbar for Post-detail">
+                        <div class="btn-group" role="group" aria-label="Post-detail toolbar">
+                            <a class="btn btn-sm btn-outline-info"
+                                href="{% url 'post_list' post.topic_id %}"
+                                title={% trans 'Список публікацій' %}><i class="fas fa-list"></i>
+                            </a>
+                            {% if user.is_authenticated and user == post.author %}
+                                <a class="btn btn-sm btn-outline-success ml-1 mr-1"
+                                    href="{% url 'post_edit' pk=post.pk topic=post.topic_id %}"
+                                    title={% trans 'Редагувати' %}><i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger"
+                                    href="{% url 'post_delete' post.pk %}"
+                                    title={% trans 'Видалити' %}><i class="fas fa-trash-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-1">
+            <h4 class="pl-3">{% trans 'Публікація з теми ' %}"{{ post.topic }}"</h4>
+            <div class="card">
+                <div class="card-header p-1">
+                    <div class="row">
+                        <div class="col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="" class="img-thumbnail rounded">
+                            {% else %}
+                                    <img src="{% static 'dist/img/publication.jpg' %}" class="img-thumbnail rounded">
+                            {% endif %}
+                        </div>
+                        <div class="col-sm">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <h2 class="card-title d-flex">{{ post.title }}</h2>
+                                </div>
+                            </div>
+                            <div class="row d-flex">
+                                <div class="col-sm">
+                                    
+                                    <p class="card-subtitle mb-1 text-muted">
+                                        {% trans 'автор' %}: {{ post.author }}
+                                    </p>
+                                    <p class="card-subtitle mb-1 text-muted">
+                                        {% trans 'опублікована' %}: {{ post.created|date:"d M Y" }}
+                                    </p>
+                                    <p class="card-subtitle text-muted">
+                                        {% trans 'редагована' %}: {{ post.updated|date:"d M Y" }}
+                                    </p>
+                                </div>
+                                <div class="col-sm d-flex justify-content-end align-self-end">
+                                    <a class="btn btn-sm btn-primary mr-1"
+                                        href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{{ object.get_absolute_url }}"
+                                        target="_blank"
+                                        rel="nofollow"
+                                        title={% trans 'Facebook' %}>
+                                        <i class="fab fa-facebook-f p-1"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-info mr-1"
+                                        href="https://twitter.com/share?url={{ request.build_absolute_uri }}{{ object.get_absolute_url }}"
+                                        target="_blank"
+                                        rel="nofollow"
+                                        title={% trans 'Twitter' %}>
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    {% if user.is_authenticated %}
+                                        <a class="btn btn-sm btn-primary mr-1"
+                                            href="{{ post.get_like_url }}"
+                                            rel="nofollow"
+                                            title={% trans 'Голос' %}>
+                                            {% if user in post.likes.all %}                      
+                                                <i class="fas fa-thumbs-up">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </i>
+                                            {% else %}
+                                                <i class="fas fa-thumbs-up"></i>
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+                                    <a class="btn btn-sm btn-secondary mr-1"
+                                        href=""
+                                        title={% trans 'Перегляди' %}>
+                                        <i class="fas fa-eye"> | 
+                                            <span class="badge badge-pill badge-danger">
+                                                {{ post.views }}    
+                                            </span>    
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-sm btn-success mr-1"
+                                        href=""
+                                        title={% trans 'Вподобання' %}>
+                                        <i class="fas fa-thumbs-up"> | 
+                                            <span class="badge badge-pill badge-danger">{{ post.likes.count }}</span>
+                                        </i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>{{ post.content|safe }}</p>
+                </div>
+                <div class="card-footer p-1">
+                    {% if object.comments.exists %}
+                        <small><b>{% trans 'Коментар:' %}({{ object.comments.count }})</b></small>
+                    {% endif %}
+                    <div class="accordion" id="accordionComment">
+                        <button class="badge badge-success" type="button" data-toggle="collapse" data-target="#collapseComment" aria-expanded="true" aria-controls="collapseComment">{% trans "Залишити свій коментар" %}</button>
+                        <div class="card border-top-0 rounded">
+                            <div id="collapseComment" class="collapse" aria-labelledby="headingComment" data-parent="#accordionComment">
+                                <div class="card-body border-top">
+                                    <form action="" method='POST'>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <div class="form-label-group">
+                                                {{ form.post }}
+                                                <!-- <small>{{ form.content.label_tag }}</small> -->
+                                                <small>{{ form.content|add_class:'form-control'|attr:'rows:2' }}</small>
+                                            </div>
+                                        </div>
+                                        <button class="badge badge-success" type="submit" name="submit">{% trans 'Відправити' %}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% for comment in post.comments.all %}
+                        {% if comment.parent is Null %}
+                            <div class="d-flex p-1 bd-highlight">
+                                <div class="bd-highlight">                                                
+                                    {% with user=comment.author %}
+                                        {% if user.image %}
+                                            <img src="{{ user.image.url }}" class="rounded"
+                                            width="32" height="32" title="{{ user.get_full_name }}">
+                                        {% else %}
+                                            {% if comment.author is not None %}
+                                                <img src="{% static 'dist/img/avatar.png' %}" class="rounded"
+                                                width="32" height="32" title="{{ user.get_full_name }}">
+                                            {% else %} 
+                                                <img src="{% static 'dist/img/guest.jpg' %}" class="rounded"
+                                                width="32" height="32" title="{% trans 'Гість' %}">
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endwith %}                                                            
+                                </div>
+                                <div class="flex-grow-1 bd-highlight">
+                                    <div class="card border-success rounded">
+                                        <div class="card-header p-1">
+                                            <i class="fas fa-comment-dots"></i>
+                                            <small class="card-subtitle mb-2">
+                                                {% trans 'автор: ' %}
+                                                {% if comment.author is not None %}
+                                                    {{ comment.author }} | 
+                                                {% else %}
+                                                    {% trans 'Гість' %} | 
+                                                {% endif %}
+                                                {% trans 'створений: ' %}{{ comment.created }}
+                                            </small>
+                                        </div>
+                                        <div class="card-body p-1">
+                                            <small>{{ comment.content }}</small>
+                                        </div>
+                                        <div class="card-footer p-1">
+                                            <div class="accordion" id="accordionReply">
+                                                <button class="badge badge-warning" type="button" data-toggle="collapse" data-target="#collapseReply{{ comment.id }}" aria-expanded="true" aria-controls="collapseReply{{ comment.id }}">{% trans "Відповісти" %}</button>
+                                                <div class="card border-top-0 rounded">
+                                                    <div id="collapseReply{{ comment.id }}" class="collapse" aria-labelledby="headingReply" data-parent="#accordionReply">
+                                                        <div class="card-body border-top">
+                                                            <form action="" method='POST'>
+                                                                {% csrf_token %}
+                                                                <div class="form-group">
+                                                                    <div class="form-label-group">
+                                                                        {{ form.post }}
+                                                                        <small>{{ form.content|add_class:'form-control'|attr:'rows:2' }}</small>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                                                <button class="badge badge-warning" type="submit" name="submit">{% trans 'Відправити' %}</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% for reply in comment.replies.all %}
+                                                <br>
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="bd-highlight">                                                
+                                                        {% with user=reply.author %}
+                                                            {% if user.image %}
+                                                                <img src="{{ user.image.url }}" class="rounded"
+                                                                width="32" height="32" title="{{ user.get_full_name }}">
+                                                            {% else %}
+                                                                {% if reply.author is not None %}
+                                                                    <img src="{% static 'dist/img/avatar.png' %}" class="rounded"
+                                                                    width="32" height="32" title="{{ user.get_full_name }}">
+                                                                {% else %} 
+                                                                    <img src="{% static 'dist/img/guest.jpg' %}" class="rounded"
+                                                                    width="32" height="32" title="{% trans 'Гість' %}">
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endwith %}                                                            
+                                                    </div>
+                                                    <div class="flex-grow-1 bd-highlight">
+                                                        <div class="card rounded">
+                                                            <div class="card-header p-1">                                                       
+                                                                <i class="fas fa-comments"></i>
+                                                                <small class="card-subtitle mb-2">
+                                                                    {% trans 'автор: ' %}
+                                                                    {% if reply.author is not None %}
+                                                                        {{ reply.author }} | 
+                                                                    {% else %}
+                                                                        {% trans 'Гість' %} | 
+                                                                    {% endif %}
+                                                                    {% trans 'створений: ' %}{{ reply.created }}
+                                                                </small>
+                                                            </div>
+                                                            <div class="card-body p-1">
+                                                                <small>{{ reply.content }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        {% endif %}
+                    {% empty %}
+                        <small>{% trans 'Коментарі до публікації відсутні' %}</small>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

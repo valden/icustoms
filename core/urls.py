@@ -11,6 +11,8 @@ urlpatterns = [
     path('contacts/', views.flatpage, {'url': '/contacts/'}, name='contacts'),
     path('accounts/', include('allauth.urls')),
     path('user/', include('user.urls')),
+    path('forum/', include('posts.urls')),
+    path('declaring/', include('declaring.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

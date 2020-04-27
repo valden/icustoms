@@ -1,0 +1,357 @@
+<!-- templates/post-list.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block head %}
+    {{ form.media }}
+{% endblock head %}
+
+{% block pageheader %}
+  {% trans "Форум" %}
+{% endblock pageheader %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header py-0 px-3 text-white bg-dark">
+            <div class="row">
+                <div class="col">
+                    <h4>{% trans 'Публікації' %}</h4>
+                </div>
+                <div class="col p-1">
+                    <div class="btn-toolbar justify-content-end"
+                            role="toolbar"
+                            aria-label="Toolbar for Posts list">
+                        <div class="btn-group" role="group" aria-label="Post toolbar">
+                            <a class="btn btn-sm btn-outline-info mr-1"
+                                href="{% url 'topic_list' %}"
+                                title={% trans 'Перелік тем' %}><i class="fas fa-list"></i>
+                            </a>
+                            <a class="btn btn-sm btn-outline-info mr-1"
+                                href="#"
+                                role="button"
+                                data-toggle="modal"
+                                data-target="#filterModal"
+                                title={% trans 'Фільтрувати/сортувати' %}>
+                                <i class="fas fa-filter"></i>
+                            </a>
+                            <a class="btn btn-sm btn-outline-info mr-1"
+                                href="#"
+                                role="button"
+                                id="dropdownSortLink"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                title={% trans 'Сортувати' %}>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </a>
+                            <div class="dropdown-menu p-1 dropdown-menu-right"
+                                    aria-labelledby="dropdownSortLink">
+                                <h6 class="dropdown-header p-1">{% trans 'Сортувати за' %}...</h6>
+                                <div class="dropdown-divider"></div>
+                                {{ filter.form.order }}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <a class="btn btn-sm btn-outline-success mr-1"
+                                    href="{% url 'post_new' topic.id %}"
+                                    role="button"
+                                    title={% trans 'Створити' %}>
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-1">
+            <h4 class="pl-3">{% trans 'Перелік публікацій за темою ' %}"{{ topic }}"</h4>
+            {% for post in object_list %}
+                <div class="card p-1">
+                    <div class="card-header p-1">
+                        <div class="row">
+                            <div class="col-md">
+                                {% with user=post.author %}
+                                    {% if user.image %}
+                                        <img src="{{ user.image.url }}" class="rounded"
+                                        width="32" height="32" title="{{ user.get_full_name }}">
+                                    {% else %}
+                                        {% if post.author is not None %}
+                                            <img src="{% static 'dist/img/avatar.png' %}" class="rounded"
+                                            width="32" height="32" title="{{ user.get_full_name }}">
+                                        {% else %} 
+                                            <img src="{% static 'dist/img/guest.jpg' %}" class="rounded"
+                                            width="32" height="32" title="{% trans 'Гість' %}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endwith %}             
+                                <span class="font-weight-bold"></span>
+                                <span class="text-muted">
+                                    {% trans 'автор' %}: {{ post.author }} | 
+                                    {% trans 'опублікована' %}: {{ post.created|date:"d M Y" }} | 
+                                    {% trans 'редагована' %}: {{ post.updated|date:"d M Y" }}
+                                </span>
+                            </div>
+                            <div class="col-md">
+                                <div class="btn-toolbar justify-content-end"
+                                    role="toolbar"
+                                    aria-label="Toolbar for Post">
+                                    <div class="btn-group" role="group" aria-label="Post toolbar">
+                                        <a class="btn btn-sm btn-outline-info mr-1"
+                                            href="{% url 'post_detail' pk=post.pk topic=post.topic_id %}"
+                                            title={% trans 'Переглянути' %}>
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% if user.is_authenticated and user == post.author %}
+                                            <a class="btn btn-sm btn-outline-success mr-1"
+                                                href="{% url 'post_edit' pk=post.pk topic=post.topic_id %}"
+                                                title={% trans 'Редагувати' %}>
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-danger"
+                                                href="{% url 'post_delete' post.pk %}"
+                                                title={% trans 'Видалити' %}>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters">
+                            <div class="col-md-1">
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" class="img-thumbnail">
+                                {% else %}
+                                    <img src="{% static 'dist/img/publication.jpg' %}" class="img-thumbnail">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-11">
+                                <div class="card-body ">
+                                    <h5 class="card-title"><b>{{ post.title }}</b></h5>
+                                    <p class="card-text">
+                                        {{ post.preview|safe }}......
+                                        <a href="{% url 'post_detail' pk=post.pk topic=post.topic_id %}">
+                                            {% trans 'далі' %}
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-1">
+                        {% if post.comments.exists %}
+                            <small>
+                                <a href="{% url 'post_detail' pk=post.pk topic=post.topic_id %}">
+                                {% trans 'Коментарі: ' %}{{ post.comments.count }}</a>
+                            </small>
+                        {% else %}
+                            <small>{% trans 'Коментарі до публікації відсутні' %}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
+            {% empty %}
+                <hr>
+                <p>{% trans 'Публікації за цією темою відсутні. Будьте першим та створіть нову публікацію.' %}</p>
+            {% endfor %}
+            {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page-item active" aria-current="page">
+                                    <span   class="page-link"
+                                            style=" background-color: green; 
+                                                    border-color: green;">
+                                            {{ page }}
+                                        <span class="sr-only">(current)</span>
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.next_page_number }}"
+                                    aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filter Modal-->
+    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog"
+            aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">
+                    {% trans 'Фільтрувати за...' %}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="GET">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.author|add_class:'form-control' }}
+                                        {{ filter.form.author.label_tag }}
+                                        {% if filter.form.author.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.author.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.author.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.title|add_class:'form-control' }}
+                                        {{ filter.form.title.label_tag }}
+                                        {% if filter.form.title.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.title.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.title.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.preview|add_class:'form-control' }}
+                                        {{ filter.form.preview.label_tag }}
+                                        {% if filter.form.preview.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.preview.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.preview.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.content|add_class:'form-control' }}
+                                        {{ filter.form.content.label_tag }}
+                                        {% if filter.form.content.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.content.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.content.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.created__gte|add_class:'form-control' }}
+                                        {{ filter.form.created__gte.label_tag }}
+                                        {% if filter.form.created__gte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.created__gte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.created__gte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.created__lte|add_class:'form-control' }}
+                                        {{ filter.form.created__lte.label_tag }}
+                                        {% if filter.form.created__lte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.created__lte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.created__lte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.updated__gte|add_class:'form-control' }}
+                                        {{ filter.form.updated__gte.label_tag }}
+                                        {% if filter.form.updated__gte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.updated__gte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.updated__gte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.updated__lte|add_class:'form-control' }}
+                                        {{ filter.form.updated__lte.label_tag }}
+                                        {% if filter.form.updated__lte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.updated__lte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.updated__lte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>                       
+                        </div>
+                        <hr>
+                        <button class="btn btn-success btn-block" type="submit">
+                            {% trans 'Застосувати' %}
+                        </button>
+                        <button class="btn btn-secondary btn-block"
+                                type="button"
+                                data-dismiss="modal">
+                            {% trans 'Відмінити' %}
+                        </button>
+                    </form>
+                </div>        
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,140 @@
+<!-- templates/declaring/entry_list.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block CSS %}
+{% endblock CSS %}
+
+
+{% block pageheader %}
+  {% trans "Декларування" %}
+{% endblock pageheader %}
+                  
+{% block content %}
+		
+	
+    <div class="m-1">
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-info"></i> {% trans "Увага" %}!</h5>
+            <p> 
+                {% blocktrans %}
+                    Ви працюєте з МИТНИМИ ДЕКЛАРАЦІЯМИ
+                    для письмового декларування товарів, що переміщуються через
+                    митний кордон України громадянами для особистих, сімейних та інших
+                    потреб, не пов’язаних зі здійсненням підприємницької діяльності
+                {% endblocktrans %}.
+            </p>
+        </div>
+        <div class='card'>
+            <div class='card-header'>
+                <h1 class='card-title'>{% trans "Перелік митних декларацій користувача" %}</h1>
+                <div class='card-tools'>
+                    <a  class='btn btn-sm btn-secondary'
+                        href={% url 'entry_create' %}
+                        title={% trans "Створити" %}>
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+            <div class='card-body table-responsive p-0'>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px"><i class="fa fa-ellipsis-v"></th>
+                            <th>{% trans "Дата" %}</th>
+                            <th>{% trans "Напрям переміщення" %}</th>
+                            <th>{% trans "Країна відправлення" %}</th>
+                            <th>{% trans "Країна призначення" %}</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in object_list %}
+                            <tr>
+                                <td style="width: 40px">
+                                    <a  class="btn btn-sm btn-secondary dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        <i class="fa fa-tools" style="color:white;"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" 
+                                            href="{% url 'entry_update' pk=entry.pk %}">
+                                            {% trans "Редагувати" %}
+                                        </a>
+                                        <a class="dropdown-item" 
+                                            href="{% url 'entry_delete' pk=entry.pk %}">
+                                            {% trans "Видалити" %}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{ entry.update_date }}</td>
+                                <td>
+                                    {% if entry.direction == '0' %}
+                                        {% trans "в'їзд" %}
+                                    {% else %}
+                                        {% trans "виїзд" %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ entry.departure.name }}</td>
+                                <td>{{ entry.arrival.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> 
+            {% if not object_list %}
+                <div class='card-footer'>                                
+                    <p>{% trans "Митні декларації відсутні" %}</p>                                
+                </div>
+            {% endif %}
+            {% if is_paginated %}
+                <div class='card-footer'>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination float-right">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a  class="page-link"
+                                        href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                        aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% for page in page_obj.paginator.page_range %}
+                                {% if page_obj.number == page %}
+                                    <li class="page-item active" aria-current="page">
+                                        <span   class="page-link"
+                                                style=" background-color: gray; 
+                                                        border-color: gray;">
+                                                {{ page }}
+                                            <span class="sr-only">(current)</span>
+                                        </span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a  class="page-link"
+                                        href="{{ request.path }}?page={{ page_obj.next_page_number }}"
+                                        aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </div> 
+    </div>
+				
+
+{% endblock content %}
+
+{% block JS %}	
+{% endblock JS %}

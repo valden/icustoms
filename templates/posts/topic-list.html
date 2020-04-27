@@ -1,0 +1,326 @@
+<!-- templates/topic-list.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+
+{% block head %}
+    {{ form.media }}
+{% endblock head %}
+
+{% block pageheader %}
+  {% trans "Форум" %}
+{% endblock pageheader %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header py-0 px-3 text-white bg-dark">
+            <div class="row">
+                <div class="col">
+                    <h4>{% trans 'Теми для обговорення' %}</h4>
+                </div>
+                <div class="col p-1">
+                    <div class="btn-toolbar justify-content-end"
+                            role="toolbar"
+                            aria-label="Toolbar for Topics list">
+                        <div class="btn-group" role="group" aria-label="Topics toolbar">
+                            <a class="btn btn-sm btn-outline-info mr-1"
+                                href="#"
+                                role="button"
+                                data-toggle="modal"
+                                data-target="#filterModal"
+                                title={% trans 'Фільтрувати/сортувати' %}>
+                                <i class="fas fa-filter"></i>
+                            </a>
+                            <a class="btn btn-sm btn-outline-info mr-1"
+                                href="#"
+                                role="button"
+                                id="dropdownSortLink"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                title={% trans 'Сортувати' %}>
+                                <i class="fas fa-sort-amount-down"></i>
+                            </a>
+                            <div class="dropdown-menu p-1 dropdown-menu-right"
+                                    aria-labelledby="dropdownSortLink">
+                                <h6 class="dropdown-header p-1">{% trans 'Сортувати за' %}...</h6>
+                                <div class="dropdown-divider"></div>
+                                {{ filter.form.order }}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <a class="btn btn-sm btn-outline-success mr-1"
+                                    href="{% url 'topic_new' %}"
+                                    role="button"
+                                    title={% trans 'Створити' %}>
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-1">
+            {% for topic in object_list %}
+                <div class="card p-1">
+                    <div class="card-header p-1">
+                        <div class="row">
+                            <div class="col d-inline">
+                                {% with user=topic.author %}
+                                    {% if user.image %}
+                                        <img src="{{ user.image.url }}" class="rounded"
+                                        width="32" height="32" title="{{ user.get_full_name }}">
+                                    {% else %}
+                                        {% if topic.author is not None %}
+                                            <img src="{% static 'dist/img/avatar.png' %}" class="rounded"
+                                            width="32" height="32" title="{{ user.get_full_name }}">
+                                        {% else %} 
+                                            <img src="{% static 'dist/img/guest.jpg' %}" class="rounded"
+                                            width="32" height="32" title="{% trans 'Гість' %}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endwith %}
+                                <span class="badge badge-secondary" title="{% trans 'Створено' %}">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <small>{{ topic.created|date:"d M Y" }}</small>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="btn-toolbar justify-content-end"
+                                    role="toolbar"
+                                    aria-label="Toolbar for Topic">
+                                    <div class="btn-group" role="group" aria-label="Topic toolbar">
+                                        {% if user.is_authenticated and user == topic.author %}
+                                            <a class="btn btn-sm btn-outline-success mr-1"
+                                                href="{% url 'topic_edit' topic.pk %}"
+                                                role="button"
+                                                title={% trans 'Редагувати' %}>
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-danger"
+                                                href="{% url 'topic_delete' topic.pk %}"
+                                                role="button"
+                                                title={% trans 'Видалити' %}>
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-1">
+                        <div class="list-group">
+                            <a href="{{ topic.get_absolute_url }}" class="list-group-item list-group-item-action">
+                                <div class="row">
+                                    <div class="col-lg-1">
+                                        {% if topic.image %}
+                                            <img src="{{ topic.image.url }}" alt="" width="100%" height="100%">
+                                        {% else %}
+                                            <img src="{% static 'dist/img/theme.png' %}" width="100%" height="100%">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-11">
+                                        <h5><b>{{ topic.title }}</b></h5>
+                                        <p>{{ topic.description }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer p-1">
+                        <div class="d-inline-flex">
+                            <span class="badge badge-success" title="{% trans 'Публікації' %}">
+                                <i class="fas fa-file"></i>
+                                {% if topic.num_posts %}
+                                    {{ topic.num_posts }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                            <span class="badge badge-success ml-2" title="{% trans 'Коментарі' %}">
+                                <i class="fas fa-comments"></i>
+                                {% if topic.num_comments %}
+                                    {{ topic.num_comments }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                            <span class="badge badge-success ml-2" title="{% trans 'Перегляди' %}">
+                                <i class="fas fa-eye"></i>
+                                {% if topic.num_views %}
+                                    {{ topic.num_views }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                            <span class="badge badge-success ml-2" title="{% trans 'Вподобання' %}">
+                                <i class="fas fa-thumbs-up"></i>
+                                {% if topic.num_likes %}
+                                    {{ topic.num_likes }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% empty %}
+                <hr>
+                <p>{% trans 'Теми для обговорення відсутні. Будьте першим та створіть нову тему.' %}</p>
+            {% endfor %}
+            {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page-item active" aria-current="page">
+                                    <span   class="page-link"
+                                            style=" background-color: green; 
+                                                    border-color: green;">
+                                            {{ page }}
+                                        <span class="sr-only">(current)</span>
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.next_page_number }}"
+                                    aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filter Modal-->
+    <div class="modal fade" id="filterModal" tabindex="-1" role="dialog"
+            aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterModalLabel">
+                    {% trans 'Фільтрувати за...' %}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="GET">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.author|add_class:'form-control' }}
+                                        {{ filter.form.author.label_tag }}
+                                        {% if filter.form.author.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.author.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.author.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.title|add_class:'form-control' }}
+                                        {{ filter.form.title.label_tag }}
+                                        {% if filter.form.title.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.title.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.title.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-label-group">
+                                        {{ filter.form.description|add_class:'form-control' }}
+                                        {{ filter.form.description.label_tag }}
+                                        {% if filter.form.description.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.description.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.description.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.created__gte|add_class:'form-control' }}
+                                        {{ filter.form.created__gte.label_tag }}
+                                        {% if filter.form.created__gte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.created__gte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.created__gte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-label-group">
+                                        {{ filter.form.created__lte|add_class:'form-control' }}
+                                        {{ filter.form.created__lte.label_tag }}
+                                        {% if filter.form.created__lte.help_text %}
+                                            <small class='form-text text-muted'>{{ filter.form.created__lte.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in filter.form.created__lte.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <button class="btn btn-success btn-block" type="submit">
+                            {% trans 'Застосувати' %}
+                        </button>
+                        <button class="btn btn-secondary btn-block"
+                                type="button"
+                                data-dismiss="modal">
+                            {% trans 'Відмінити' %}
+                        </button>
+                    </form>
+                </div>        
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

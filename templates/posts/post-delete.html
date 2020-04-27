@@ -1,0 +1,25 @@
+<!-- templates/post-delete.html -->
+
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block pageheader %}
+  {% trans "Форум" %}
+{% endblock pageheader %}
+
+{% block content %}
+	<div class="card mt-2">
+        <div class="card-header py-0 px-3 text-white bg-dark">
+            <h4>{% trans 'Видалення публікації' %}</h4>
+        </div>
+        <div class="card-body p-1">
+		    <form class="" action="" method="post">
+		        {% csrf_token %}
+		        <p>{% trans "Ви впевнені, що хочете видалити публікацію" %} "{{ post.title }}"?</p>
+		        <button class="btn btn-danger ml-2" type="submit">{% trans 'Видалити' %}</button>
+		        <a class="btn btn-secondary ml-2" href="{% url 'post_list' topic=post.topic_id %}">{% trans 'Відмінити' %}</a>
+		    </form>
+		</div>
+	</div>
+{% endblock %}

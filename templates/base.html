@@ -8,12 +8,15 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+		<link rel="shortcut icon" href="{% static 'dist/img/favicon.ico' %}" type="image/x-icon">
 		<title>{% trans "iCustoms | Митниця в твоїй кишені" %}</title>
 		{% include 'header.html' %}
 		{% block CSS %}
 		{% endblock CSS %}
 	</head>
 	<body class="hold-transition sidebar-mini">
+		{% block head %}
+		{% endblock head %}
 		<div class="wrapper">
 			{% include 'navbar.html' %}
 
@@ -22,7 +25,7 @@
 			<!-- Content Wrapper. Contains page content -->
 			<div class="content-wrapper">
 				{% for message in messages %}
-					<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+					<div class="alert {{ message.tags }} alert-dismissible m-1" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="{% trans "Close"%} ">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -81,6 +84,7 @@
 
 		<!-- REQUIRED SCRIPTS -->
 		{% include 'scripts.html' %}
+
 		{% block JS %}
 		{% endblock JS %}
 	</body>

@@ -1,0 +1,91 @@
+<!-- templates/topic-new.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block head %}
+    {{ form.media }}
+{% endblock head %}
+
+{% block pageheader %}
+  {% trans "Форум" %}
+{% endblock pageheader %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header py-0 px-3 text-white bg-dark">
+            <h4>{% trans 'Нова тема' %}</h4>
+        </div>
+        <div class="card-body p-1">
+            <div class="form-group">
+                <form enctype="multipart/form-data" method="post">
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <b>{{ form.title.label_tag }}</b>
+                            <p>{{ form.title|add_class:'form-control' }}</p>
+                            {% if form.title.help_text %}
+                                <small class='form-text text-muted'>{{ form.title.help_text }}</small>
+                            {% endif %}
+                            {% if form.preview.error %}
+                                {% for error in form.title.errors %}
+                                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            {% if topic.image %}
+                                <img src="{{ topic.image.url }}" alt="" class="img-thumbnail">
+                            {% else %}
+                                <img src="{% static 'dist/img/theme.png' %}" class="img-thumbnail">
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <div class="form-label-group">
+                                    <b>{{ form.image.label_tag }}</b>
+                                    {{ form.image }}
+                                    {% if form.image.help_text %}
+                                        <small class='form-text text-muted'>{{ form.image.help_text }}</small>
+                                    {% endif %}
+                                    {% if form.image.error %}
+                                        {% for error in form.image.errors %}
+                                            <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <b>{{ form.description.label_tag }}</b>
+                            <p>{{ form.description|add_class:'form-control' }}</p>
+                            {% if form.description.help_text %}
+                                <small class='form-text text-muted'>{{ form.description.help_text }}</small>
+                            {% endif %}
+                            {% if form.description.error %}
+                                {% for error in form.description.errors %}
+                                    <span class="form-text text-danger"><small>{{ error }}</small></span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn btn-success ml-2" type="submit">{% trans 'Зберегти' %}</button>
+                    <a class="btn btn-secondary ml-2" href="{% url 'topic_list' %}">{% trans 'Відмінити' %}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

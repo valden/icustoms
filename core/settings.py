@@ -40,13 +40,17 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.google',
-    # 'widget_tweaks',
+    'widget_tweaks',
     'crispy_forms',
     'django_countries',
     'django_cleanup',
+    'django_filters',
+    'ckeditor',
 
     # Local apps
     'user.apps.UserConfig',
+    'posts.apps.PostsConfig',
+    'declaring',
 
 ]
 
@@ -115,12 +119,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = 'uk'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
 DATE_INPUT_FORMATS = ['%d/%m/%Y', '%d.%m.%Y']           # 18/09/2009
+DATE_FORMAT = '%d.%m.%Y'
+DATETIME_FORMAT = 'd.m.Y H:i'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -181,4 +187,83 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
+}
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono',
+        # 'skin': 'office2013',
+        # 'toolbar_Basic': [
+        #     ['Source', '-', 'Bold', 'Italic']
+        # ],
+        'toolbar_YourCustomToolbarConfig': [
+            # {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'document', 'items': [
+                'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard', 'items': [
+                'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': [
+                'Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'styles', 'items': [
+                'Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Maximize',
+
+            ]},
+            # {'name': 'forms',
+            #  'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+            #            'HiddenField']},
+            # '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+                       'Language']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            # '/',
+            # {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            # {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            # {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+            # {'name': 'about', 'items': ['About']},
+            # '/',  # put this to force next toolbar on new line
+            # {'name': 'yourcustomtools', 'items': [
+            #     # put the name of your editor.ui.addButton here
+            #     'Preview',
+            #     'Maximize',
+            #
+            # ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        'height': '100%',
+        'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': '100%',
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage',  # the upload image feature
+            # your extra plugins here
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath'
+        ]),
+    }
 }
