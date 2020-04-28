@@ -16,8 +16,14 @@
     <!-- Jumbotron Header -->
     <header class="jumbotron my-2" style="padding-top: 20px;padding-bottom: 20px;">
         <h1 class="display-3"><b>{% trans "Щиро вітаємо!" %}</b></h1>
-        <h3 class="lead">{% trans "We are really glad to welcome you on our first customs web-portal" %} <b>iCustoms<sup><small>info</small></sup></b>. 
-        {% trans "Our mission to provide everyone with eficient and convenient service of customs declaration procedure. We'll realize our main goal in several steps. And the first one is to make free service for customs declaration of goods moved (sent) by citizens across the customs border of Ukraine. Do not hesitate to take part in financing the development of our common project" %}.</h3>
+        <h3 class="lead">{% trans "Ми дісно раді вітати Вас на нашому першому митному веб-порталі" %} <b>iCustoms<sup><small>info</small></sup></b>. 
+        {% blocktrans %}Наша мета попри всі державні перепони забезпечити кожного ефективним та 
+        зручним сервісом з митного декларування. Ми плануємо реалізувати нашу основну мету 
+        в декілька кроків та за Вашої активної підтримки. І першим з таких кроків - створити 
+        безкоштовний сервіс з митного декларування товарів, що переміщуються (пересилаються) 
+        громадянами через митний кордон України, завдяки якому Ви зможете завчасно (до перетину 
+        митного кордону) створити та роздрукувати митну декларацію. Сподіваємось на Вашу посильну 
+        участь у нашому спільному проекті{% endblocktrans %}.</h3>
         <a href="#" class="btn btn-primary btn-lg">{% trans "Фінансувати!" %}</a>
     </header>
 
@@ -31,7 +37,13 @@
                     <h4><b>{% trans "Інструменти" %}</b></h4>
                 </div>
                 <div class="card-body">
-                    <p>{% trans "Convenient and informative dashboard. Visitors and customers will get all necessary information on customs border capacity, top news, top posts in forum and latest comments" %}...</p>
+                    <p>{% blocktrans %}Зручна та інформативна панель інструментів. 
+                    Відвідувачі та клієнти отримають всю необхідну інформацію щодо
+                    завантаженості пунктів пропуску, останіх новин в митній сфері,
+                    змін митного законодавства, популярних публікацій з митної тематики{% endblocktrans %}...</p>
+                    <span class="right badge badge-danger">
+                        {% trans "незабаром" %}
+                    </span>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">{% trans "Перейти!" %}</a>
@@ -47,10 +59,13 @@
                     <h4><b>{% trans "Форум" %}</b></h4>
                 </div>
                 <div class="card-body">
-                    <p>{% trans "Very simple and understandable forum where you can discuss problems and share your experiences in customs area. Visitors can post publications and comments without registration" %}...</p>
+                    <p>{% blocktrans %}Дуже простий та зрозумілий у використанні форум, де
+                    Ви зможете обговорити свої проблеми та поділитися досвідом у вирішенні митних 
+                    питань. Відвідувачі порталу зможуть розміщувати свої публікації та залишати
+                    свої коментарі під наявними публікаціями без реєстрації на веб-порталі{% endblocktrans %}...</p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-warning text-dark">{% trans "Перейти!" %}</a>
+                    <a href="{% url 'topic_list' %}" class="btn btn-warning text-dark">{% trans "Перейти!" %}</a>
                 </div>
                 <br>
             </div>
@@ -63,10 +78,13 @@
                     <h4><b>{% trans "Новини" %}</b></h4>
                 </div>
                 <div class="card-body">
-                    <p>{% trans "Latest news from all over Ukraine concerning customs offices, procedures of customs control and customs clearance, customs offenses and liability for such offenses" %}...</p>
+                    <p>{% blocktrans %}Останні новини з усієї України та поза її межами щодо 
+                    розвитку митної інфраструктури та реформування митних органів, 
+                    процедур митного контролю та митного оформлення товарів, 
+                    порушень митних правил та відповідальності за такі порушення{% endblocktrans %}...</p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-success text-white">{% trans "Перейти!" %}</a>
+                    <a href="{% url 'news_list' %}" class="btn btn-success text-white">{% trans "Перейти!" %}</a>
                 </div>
                 <br>
             </div>
@@ -79,10 +97,19 @@
                     <h4><b>{% trans "Кабінет" %}</b></h4>
                 </div>
                 <div class="card-body">
-                    <p>{% trans "Cabinet where only authorized (registered) customers can declare their goods for customs control and customs clearance. It is fully free for use and has responsive and convenient interface" %}...</p>
+                    <p>{% blocktrans %}Електронний кабінет клієнта, де тільки
+                    авторизовані (зареєстровані) користувачі порталу зможуть ствворити та роздрукувати
+                    митну декларацію на свої товари/речі для подальшого пред'явлення митним органам 
+                    в пункті пропуску на митному кордоні та здійснення митниками митного контролю
+                    та митного оформлення таких товарів. Він повністю безкоштовний та має зручний 
+                    і інтуітивно зрозумілий інтерфейс{% endblocktrans %}...</p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-danger text-white">{% trans "Перейти!" %}</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'entry_list' %}" class="btn btn-danger text-white">{% trans "Перейти!" %}</a>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="btn btn-danger text-white">{% trans "Перейти!" %}</a>
+                    {% endif %}
                 </div>
                 <br>
             </div>

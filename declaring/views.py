@@ -18,7 +18,7 @@ class EntryListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return Entry.objects.filter(user_id=self.request.user.id)
+        return Entry.objects.filter(user_id=self.request.user.id).order_by('-update_date')
 
 
 class EntryCreateView(SuccessMessageMixin, CreateView):
