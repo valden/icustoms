@@ -1,0 +1,89 @@
+<!-- templates/news/news-list.html -->
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block head %}
+    {{ form.media }}
+{% endblock head %}
+
+{% block pageheader %}
+    {% trans "Новини" %}
+{% endblock pageheader %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><b>{% trans 'Останні митні новини' %}</b></h3>
+        </div>
+        <div class="card-body">
+            {% for new in object_list %}
+                <div class="card card-success no-margin">
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card">
+                            <li class="item">
+                                <div class="product-img">
+                                    {% if new.5 %}
+                                        <img src="{{ new.5 }}" alt="Post Image">
+                                    {% else %}
+                                        <img src="{% static 'dist/img/news.png' %}" alt="Post Image">
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <a class="product-title" href="{{ new.3 }}" target="_blank">
+                                        {{ new.1|safe }} 
+                                    </a>
+                                    <span class="product-description">{{ new.0|safe }}|{{ new.4 }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+            {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                    aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for page in page_obj.paginator.page_range %}
+                            {% if page_obj.number == page %}
+                                <li class="page-item active" aria-current="page">
+                                    <span   class="page-link"
+                                            style=" background-color: green; 
+                                                    border-color: green;">
+                                            {{ page }}
+                                        <span class="sr-only">(current)</span>
+                                    </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a  class="page-link"
+                                    href="{{ request.path }}?page={{ page_obj.next_page_number }}"
+                                    aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

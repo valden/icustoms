@@ -11,6 +11,7 @@ urlpatterns = [
     path('contacts/', views.flatpage, {'url': '/contacts/'}, name='contacts'),
     path('accounts/', include('allauth.urls')),
     path('user/', include('user.urls')),
+    path('news/', include('news.urls')),
     path('forum/', include('posts.urls')),
     path('declaring/', include('declaring.urls')),
 ]

@@ -46,9 +46,11 @@ INSTALLED_APPS = [
     'django_cleanup',
     'django_filters',
     'ckeditor',
+    'feedparser',
 
     # Local apps
     'user.apps.UserConfig',
+    'news',
     'posts.apps.PostsConfig',
     'declaring',
 
