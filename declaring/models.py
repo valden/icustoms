@@ -67,6 +67,8 @@ class Entry(models.Model):
         blank=True)
     vehicle = models.ForeignKey(
         Vehicle,
+        null=True,
+        blank=True,
         on_delete=models.DO_NOTHING,
         related_name='auto')
     purpose = models.CharField(

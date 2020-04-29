@@ -42,13 +42,14 @@
                 {% crispy form %}
                 
                 
-                {% comment %} {{ goods.management_form|crispy }}
+                {{ goods_form.management_form|crispy }}
                      
                 <div id='form_set'>
-                    {% for item in goods.forms %}
+                    {% for item in goods_form.forms %}
                         {{ item.non_field_errors }}
                         {{ item.errors }}
-                        <div class='no-error'>                   
+                        <div class='no-error'> 
+                            {{ item.id }}                  
                             {% crispy item %}                         
                         </div>                                       
                     {% endfor %}
@@ -57,9 +58,9 @@
                 <div id='empty_form' style='display:none'>
                     <div class='no-error'>
                         
-                        {% crispy goods.empty_form %}
+                        {% crispy goods_form.empty_form %}
                     </div>
-                </div> {% endcomment %}
+                </div>
                                          
                             
                     <div class="buttonHolder mt-3">

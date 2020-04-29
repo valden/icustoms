@@ -177,6 +177,7 @@ class GoodsForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.form_method = 'post'
         self.helper.disable_csrf = True
+        self.helper.render_required_fields = True
         # self.helper.template = 'bootstrap4/table_inline_formset.html'
 
         self.helper.form_show_labels = False
@@ -221,7 +222,6 @@ class GoodsForm(forms.ModelForm):
                     Div(
                         Field(
                             'goods_currency',
-
                         ),
                         css_class='col-md-1'
                     ),
@@ -230,13 +230,13 @@ class GoodsForm(forms.ModelForm):
                             '<i class="nav-icon fas fa-times-circle float-left mt-1" style="color:red"></i>'),
                         Field(
                             'DELETE',
+                            title=_('Видалити')
                         ),
                         css_class='col-md-1 tools'
                     ),
                 ),
                 css_class='formset'
             ),
-
         )
 
     class Meta:
@@ -244,33 +244,15 @@ class GoodsForm(forms.ModelForm):
         exclude = ()
 
 
-# class AddableFormSet(BaseInlineFormSet):
-#     can_add_form = True
-
-#     def add_form(self, **kwargs):
-#         self.forms.append(self._construct_form(
-#             self.total_form_count(), **kwargs))
-#         self.forms[-1].is_bound = False
-#         self.data = self.data.copy()
-#         self.data['%s-%s' % (self.management_form.prefix, TOTAL_FORM_COUNT)
-#                   ] = self.management_form.cleaned_data[TOTAL_FORM_COUNT] + 1
-
-#     @property
-#     def add_form_key(self):
-#         return self.add_prefix(ADD_FORM_KEY)
-
-
 GoodsFormSet = inlineformset_factory(
     Entry, Goods,
     form=GoodsForm,
-    # formset=AddableFormSet,
     fields=(
         'goods_name',
         'goods_number',
         'goods_unit',
         'goods_value',
         'goods_currency',
-
     ),
     extra=1,
     can_delete=True
