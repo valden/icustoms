@@ -7,6 +7,11 @@ from django.core.validators import (MaxValueValidator,
                                     MaxLengthValidator,
                                     MinLengthValidator)
 import datetime
+from num2words import num2words
+import math
+from itertools import zip_longest
+from django.db.models import Sum
+from django.http import request
 
 
 class Entry(models.Model):
@@ -91,6 +96,44 @@ class Entry(models.Model):
         null=True,
         blank=False)
 
+    def num_kids_words(self):
+        return num2words(self.kids_number, lang='uk')
+
+    def get_goods(self):
+        return self.goods.filter(entry=self.pk)
+
+    def num_goods(self):
+        return self.goods.filter(entry=self.pk).count()
+
+    def total_empty_rows(self):
+        total_goods_rows = 0
+        for item in self.get_goods():
+            print(item.goods_value)
+            goods_name_rows = math.ceil(len(item.goods_name) / 30)
+            goods_number_rows = math.ceil(
+                len(num2words(int(item.goods_number), lang='uk')) / 15)
+            total_goods_rows = total_goods_rows + \
+                max(goods_name_rows, goods_number_rows)
+        return 15 - total_goods_rows
+
+    def goods_total_number(self):
+        return self.goods.filter(entry=self.pk).aggregate(Sum('goods_number'))['goods_number__sum']
+
+    def total_num2words(self):
+        numb = self.goods_total_number()
+        return num2words(numb, lang='uk')
+
+    def goods_total_value(self):
+        return self.goods.filter(entry=self.pk).aggregate(Sum('goods_value'))['goods_value__sum']
+
+    def compare_goods_units(self):
+        if len(self.get_goods().values('goods_unit').distinct()) == 1:
+            return self.get_goods().values('goods_unit').first()['goods_unit']
+
+    def compare_goods_currencies(self):
+        if len(self.get_goods().values('goods_currency').distinct()) == 1:
+            return self.get_goods().values('goods_currency').first()['goods_currency']
+
     def __str__(self):
         return " - ".join([self.user.get_full_name(), str(self.update_date)])
 
@@ -136,6 +179,25 @@ class Goods(models.Model):
         default=None,
         null=True,
         blank=True)
+
+    def numinwords(self):
+        return num2words(self.goods_number, lang='uk')
+
+    def goods_rows_number(self):
+        name_rows = math.ceil(len(self.goods_name) / 30)
+        number_rows = math.ceil(len(self.numinwords()) / 15)
+        return max(name_rows, number_rows)
+
+    def split_goods_name(self):
+        return [(self.goods_name[i:i + 30])
+                for i in range(0, len(self.goods_name), 30)]
+
+    def split_goods_number(self):
+        return [(self.numinwords()[i:i + 15])
+                for i in range(0, len(self.numinwords()), 15)]
+
+    def zip_goods(self):
+        return zip_longest(self.split_goods_name(), self.split_goods_number(), fillvalue='')
 
     def __str__(self):
         return str(self.entry)

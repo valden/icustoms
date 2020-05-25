@@ -5,6 +5,15 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block CSS %}
+<style>
+    @media only screen and (max-width: 900px) {
+        .one{
+            display: none;
+        }
+    }
+</style>
+{% endblock CSS %}
 
 {% block profile_tabs %}
     <div class="card elevation-3">
@@ -49,8 +58,7 @@
                                             <th style="width: 40px"><i class="fa fa-ellipsis-v"></th>
                                             <th>{% trans "Назва" %}</th>
                                             <th>{% trans "Номер" %}</th>
-                                            <th>{% trans "Дата" %}</th>
-                                            
+                                            <th class="one">{% trans "Дата" %}</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,7 +81,7 @@
                                                 </td>
                                                 <td>{{ doc.doc_name }}</td>
                                                 <td>{{ doc.doc_number }}</td>
-                                                <td>{{ doc.doc_date }}</td>
+                                                <td class="one">{{ doc.doc_date }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

@@ -1,14 +1,19 @@
 from .models import Entry, Goods
 from user.models import Document
 from .forms import EntryForm, GoodsFormSet
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView
+from django.views.generic import View, DetailView, CreateView, UpdateView, ListView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 import datetime
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+from core import settings
+from django.template.loader import render_to_string
+import os
+from django.core.mail import EmailMessage
+from django.contrib import messages
 
 
 class EntryListView(ListView):
@@ -92,44 +97,6 @@ class EntryUpdateView(SuccessMessageMixin, UpdateView):
     def form_invalid(self, form, goods_form):
         return self.render_to_response(self.get_context_data(form=form, goods_form=goods_form))
 
-    # def get_context_data(self, **kwargs):
-    #     data = super(EntryUpdateView, self).get_context_data(**kwargs)
-    #     if self.request.POST:
-    #         data['goods'] = GoodsFormSet(
-    #             self.request.POST, instance=self.object)
-    #     else:
-    #         data['goods'] = GoodsFormSet(instance=self.object)
-    #     return data
-
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     formset = context['goods']
-    #     with transaction.atomic():
-    #         form.instance.user_id = self.request.user.id
-    #         self.object = form.save()
-    #         if formset.is_valid():
-    #             formset.instance = self.object
-    #             formset.save()
-    #     return super(EntryUpdateView, self).form_valid(form)
-
-    # def post(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     form = self.get_form()
-    #     context = self.get_context_data()
-    #     formset = context['goods']
-    #     with transaction.atomic():
-    #         form.instance.user_id = self.request.user.id
-    #         self.object = form.save()
-    #         if formset.is_valid():
-    #             formset.instance = self.object
-    #             formset.save()
-    #     # if form.is_valid():
-    #     #     entry_edit = form.save(commit=False)
-    #     #     entry_edit.save()
-    #             return redirect('entry_list')
-    #         else:
-    #             return super(EntryUpdateView, self).get(request, *args, **kwargs)
-
 
 class EntryDeleteView(SuccessMessageMixin, DeleteView):
     """Delete a selected entry"""
@@ -139,3 +106,58 @@ class EntryDeleteView(SuccessMessageMixin, DeleteView):
 
     def get(self, *args, **kwargs):
         return self.delete(*args, **kwargs)
+
+
+# class EntryPdfView(DetailView):
+#     """Display a selected entry in pdf format"""
+#     model = Entry
+#     template_name = 'declaring/entry_form.html'
+
+#     def get_success_url(self):
+#         return reverse('entry_pdf', kwargs={'pk': self.object.pk})
+
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         Entry.objects.filter(pk=self.object.pk)
+#         context = self.get_context_data(object=self.object)
+#         return self.render_to_response(context)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(EntryPdfView, self).get_context_data(**kwargs)
+    #     context['entry'] = Entry.objects.filter(id=self.object.pk)
+    #     return context
+
+
+class EntryPreView(DetailView):
+    model = Entry
+    template_name = 'declaring/entry_preview.html'
+
+
+class EntryPrintView(DetailView):
+    model = Entry
+    template_name = 'declaring/entry_print.html'
+
+
+class EntrySendEmail(DetailView):
+    model = Entry
+    template_name = 'declaring/entry_print.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        content = render_to_string('declaring/entry_print.html', context)
+        with open('entry.html', 'w', encoding='UTF-8') as static_file:
+            static_file.write(content)
+        msg = EmailMessage(
+            _('Ваша митна декларація'),
+            _('У додатку до цього листа надіслано підготовлену Вами митну декларацію'),
+            'info@icustoms.info',
+            [request.user.email],
+        )
+        msg.content_subtype = "html"
+        msg.attach_file('entry.html')
+        msg.send()
+        os.remove('entry.html')
+        messages.success(request, _(
+            'Митну декларацію успішно відправлено на Вашу поштову скриньку %s') % request.user.email)
+        return redirect('entry_list')

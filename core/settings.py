@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     # Local apps
     'user.apps.UserConfig',
+    'contacts',
     'news',
     'posts.apps.PostsConfig',
     'declaring',
@@ -175,7 +176,12 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
 # EMAIL SETTINGS
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.icustoms.info'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@icustoms.info'
+EMAIL_HOST_PASSWORD = 'Mi4Car6p'
+EMAIL_USE_SSL = True
 
 
 # CRISPY FORMS

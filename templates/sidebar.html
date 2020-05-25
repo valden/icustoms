@@ -115,36 +115,52 @@
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{% url 'entry_list' %}" class="nav-link">
+                    <li class="nav-item has-treeview">
+                        <a href="" class="nav-link">
                             <i class="nav-icon fas fa-file-invoice"></i>
                             <p>
                                 {% trans "Декларування" %}
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-calculator"></i>
-                            <p>
-                                {% trans "Калькулятори" %}
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Active Page</p>
+                                <a href="{% url 'entry_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>{% trans "МД (громадяни)" %}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Inactive Page</p>
+                                <i class="nav-icon fas fa-hryvnia"></i>
+                                <p>
+                                    {% trans "Декларація ТПВ" %}
+                                    <span class="right badge badge-danger">
+                                        {% trans "незабаром" %}
+                                    </span>
+                                </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>
+                                    {% trans "МД (підприємства)" %}
+                                    <span class="right badge badge-danger">
+                                        {% trans "незабаром" %}
+                                    </span>
+                                </p>
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'calcs' %}" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>
+                                {% trans "Калькулятори" %}
+                            </p>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">

@@ -1,0 +1,26 @@
+<!-- templates/contacts/contacts.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %} 
+
+{% block CSS %}
+{% endblock CSS %}
+
+
+{% block pageheader %}
+  {% trans "Контактна форма" %}
+{% endblock pageheader %}
+                  
+{% block content %}
+		
+	<div class="col-lg-6 col-md">
+		<form method='post'>
+			{% csrf_token %} 
+			{% crispy form %}							
+		</form>
+	</div>
+	<br>
+
+{% endblock content %}

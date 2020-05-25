@@ -4,7 +4,16 @@
 {% load static %}
 {% load i18n %}
 
+
+
 {% block CSS %}
+<style>
+    @media only screen and (max-width: 900px) {
+        .one{
+            display: none;
+        }
+    }
+</style>
 {% endblock CSS %}
 
 
@@ -45,11 +54,12 @@
                         <tr>
                             <th style="width: 40px"><i class="fa fa-ellipsis-v"></th>
                             <th>{% trans "Дата" %}</th>
-                            <th>{% trans "Напрям переміщення" %}</th>
-                            <th>{% trans "Країна відправлення" %}</th>
-                            <th>{% trans "Країна призначення" %}</th>                            
+                            <th>{% trans "Напрям" %}</th>
+                            <th class="one">{% trans "Країна відправлення" %}</th>
+                            <th class="one">{% trans "Країна призначення" %}</th>                            
                         </tr>
                     </thead>
+                    
                     <tbody>
                         {% for entry in object_list %}
                             <tr>
@@ -59,16 +69,21 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" 
-                                            href="">
+                                            href="{% url 'entry_preview' pk=entry.pk %}">
                                             {% trans "Переглянути" %}
                                         </a>
                                         <a class="dropdown-item" 
-                                            href="">
+                                            href="{% url 'entry_print' pk=entry.pk %}"
+                                            target="_blank">
                                             {% trans "Друкувати" %}
                                         </a>
                                         <a class="dropdown-item" 
                                             href="{% url 'entry_update' pk=entry.pk %}">
                                             {% trans "Редагувати" %}
+                                        </a>
+                                        <a class="dropdown-item" 
+                                            href="{% url 'entry_email' pk=entry.pk %}">
+                                            {% trans "На Email" %}
                                         </a>
                                         <a class="dropdown-item" 
                                             href="{% url 'entry_delete' pk=entry.pk %}">
@@ -84,8 +99,8 @@
                                         {% trans "виїзд" %}
                                     {% endif %}
                                 </td>
-                                <td>{{ entry.departure.name }}</td>
-                                <td>{{ entry.arrival.name }}</td>
+                                <td class="one">{{ entry.departure.name }}</td>
+                                <td class="one">{{ entry.arrival.name }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

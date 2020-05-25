@@ -87,15 +87,33 @@ class EntryForm(forms.ModelForm):
             ),
             Fieldset(
                 _('1. Відомості про особу'),
-                'passport',
-                'departure',
-                'arrival'
+                Field(
+                    'passport',
+                    title=_(
+                        '''Обирається з переліку, який створено користувачем у власному профілі'''
+                    )
+                ),
+                Field(
+                    'departure',
+                    title=_(
+                        '''Країна, з якої прибув (згідно з документами, що підтверджують маршрут прямування, у разі їх наявності)'''
+                    )
+                ),
+                Field(
+                    'arrival',
+                    title=_(
+                        '''Країна, до якої прямує (згідно з документами, що підтверджують маршрут прямування, у разі їх наявності)'''
+                    )
+                ),
             ),
             Fieldset(
                 "Зі мною прямують неповнолітні діти",
                 Field(
                     'kids_number',
-                    placeholder=_('Кількість дітей')
+                    placeholder=_('Кількість дітей'),
+                    title=_(
+                        '''Наявність (відсутність) дітей віком до 16 років, які супроводжуються громадянином і перетинають митний кордон України разом з ним, із зазначенням кількості (цифрами та словами) таких дітей'''
+                    )
                 ),
                 css_class='col-md-4'
             ),
@@ -108,7 +126,10 @@ class EntryForm(forms.ModelForm):
                             _("2.1. Супроводжуваний багаж, ручна поклажа"),
                             Field(
                                 'accamp_number',
-                                placeholder=_('Кількість місць')
+                                placeholder=_('Кількість місць'),
+                                title=_(
+                                    '''Зазначаються дані про наявність (відсутність) супроводжуваного багажу та ручної поклажі, а також про кількість їх місць'''
+                                )
                             ),
                         ),
                         css_class='col-md-4'
@@ -118,7 +139,10 @@ class EntryForm(forms.ModelForm):
                             _("2.2. Несупроводжуваний багаж"),
                             Field(
                                 'nonaccamp_number',
-                                placeholder=_('Кількість місць')
+                                placeholder=_('Кількість місць'),
+                                title=_(
+                                    '''Зазначаються дані про наявність (відсутність) несупроводжуваного багажу і про кількість його місць'''
+                                )
                             ),
                         ),
                         css_class='col-md-4'
@@ -128,7 +152,10 @@ class EntryForm(forms.ModelForm):
                             _("2.3. Вантажне відправлення"),
                             Field(
                                 'cargo_number',
-                                placeholder=_('Кількість місць')
+                                placeholder=_('Кількість місць'),
+                                title=_(
+                                    '''Заповнюється у разі відправлення громадянином товарів за межі митної території України у вантажному відправленні'''
+                                )
                             ),
                         ),
                         css_class='col-md-4'
@@ -140,14 +167,27 @@ class EntryForm(forms.ModelForm):
                 _('3. Відомості про наявність товарів'),
                 Fieldset(
                     _("3.2. Транспортний засіб особистого користування"),
-                    'vehicle',
+                    Field(
+                        'vehicle',
+                        title=_(
+                            '''Обирається з переліку, який створено користувачем у власному профілі'''
+                        )
+                    ),
                     InlineRadios('purpose'),
+                    title=_(
+                        '''Наводяться детальні відомості про транспортний засіб особистого користування, що тимчасово ввозиться на митну територію України, ввозиться на митну територію України з метою транзиту або зворотно вивозиться за межі митної території України. У полі для зазначення мети переміщення транспортного засобу особистого користування через митний кордон України ставиться позначка в потрібній рамці'''
+                    )
                 ),
                 Fieldset(
                     _('''3.3. Товари, переміщення яких через державний кордон України
                     обмежено (здійснюється за дозвільними документами, що видаються
                     органами виконавчої влади) або заборонено'''),
-                    InlineRadios('limited'),
+                    InlineRadios(
+                        'limited',
+                        title=_(
+                            '''Заповнення здійснюється шляхом проставлення позначки у відповідній рамці: „Так” - за наявності товарів переміщення, „Ні” - за їх відсутності'''
+                        )
+                    ),
                 ),
             ),
             HTML('<hr>'),
@@ -167,33 +207,23 @@ class GoodsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GoodsForm, self).__init__(*args, **kwargs)
-
-        # self.fields['passport'].queryset = Document.objects.filter(
-        #     user_id=user_id)
-        # self.fields['vehicle'].queryset = Vehicle.objects.filter(
-        #     user_id=user_id)
-
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.form_method = 'post'
         self.helper.disable_csrf = True
         self.helper.render_required_fields = True
-        # self.helper.template = 'bootstrap4/table_inline_formset.html'
-
         self.helper.form_show_labels = False
-        # self.helper.form_class = 'form-horizontal'
-        # self.helper.label_class = 'col-lg-3'
-        # self.helper.field_class = 'col-lg-9'
         self.helper.layout = Layout(
-
             Fieldset(
                 "",
                 Row(
                     Div(
                         Field(
                             'goods_name',
-                            placeholder=_(
-                                'Найменування товару')
+                            placeholder=_('Найменування товару'),
+                            title=_('''Зазначаються точні дані про товари (назви, характеристики товарів, відмітні ознаки тощо), необхідні для їх ідентифікації, а також реквізити:
+- дозвільних документів (найменування, номер і дата видачі дозвільного документа й орган, що його видав) - у разі декларування товарів з поданням дозвільних документів, які є підставою для пропуску товарів через митний кордон України;
+- документів, що є документальним підтвердженням для надання пільг в оподаткуванні (вид, номер і дата документа), - при здійсненні митного оформлення товарів з наданням пільг в оподаткуванні.''')
                         ),
                         css_class='col-md-5',
 
@@ -201,27 +231,34 @@ class GoodsForm(forms.ModelForm):
                     Div(
                         Field(
                             'goods_number',
-                            placeholder=_('Кількість')
+                            placeholder=_('Кількість'),
+                            title=_(
+                                '''Зазначається вага або кількість задекларованих товарів за кожним найменуванням (цифрами та словами)''')
                         ),
                         css_class='col-md-2'
                     ),
                     Div(
                         Field(
                             'goods_unit',
-
+                            title=_(
+                                '''Обирається одиниця виміру ваги/кількості''')
                         ),
                         css_class='col-md-1'
                     ),
                     Div(
                         Field(
                             'goods_value',
-                            placeholder=_('Сума')
+                            placeholder=_('Сума'),
+                            title=_(
+                                '''Зазначається фактурна вартість задекларованих товарів''')
                         ),
                         css_class='col-md-2'
                     ),
                     Div(
                         Field(
                             'goods_currency',
+                            title=_(
+                                '''Обирається валюта фактурної вартості задекларованих товарів''')
                         ),
                         css_class='col-md-1'
                     ),
@@ -230,7 +267,8 @@ class GoodsForm(forms.ModelForm):
                             '<i class="nav-icon fas fa-times-circle float-left mt-1" style="color:red"></i>'),
                         Field(
                             'DELETE',
-                            title=_('Видалити')
+                            title=_(
+                                'В разі проставлення позначки після зберігання МД товар буде видалено із переліку')
                         ),
                         css_class='col-md-1 tools'
                     ),
@@ -256,4 +294,6 @@ GoodsFormSet = inlineformset_factory(
     ),
     extra=1,
     can_delete=True
+
+
 )

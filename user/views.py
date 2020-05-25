@@ -1,4 +1,6 @@
 from .models import User, Document, Vehicle
+from declaring.models import Entry
+from posts.models import Post
 from .forms import UserForm, DocumentForm, VehicleForm
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -17,6 +19,27 @@ class ProfileView(UpdateView):
     def get_object(self):
         return self.request.user
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Total number of entries
+        user_entries = Entry.objects.filter(user=self.request.user).count()
+        context['user_entries'] = user_entries
+        # Total number of posts
+        user_posts = Post.objects.filter(author=self.request.user)
+        context['user_posts'] = user_posts.count()
+        # Total number of comments
+        total_comments = 0
+        for post in user_posts:
+            total_comments += int(post.comments.count())
+        context['user_comments'] = total_comments
+        # Total number of likes
+        total_likes = 0
+        for post in user_posts:
+            total_likes += int(post.likes.count())
+        context['user_likes'] = total_likes
+        context['user'] = self.request.user
+        return context
+
 
 class DocumentListView(ListView):
     """Display list of user's existing documents"""
@@ -27,6 +50,27 @@ class DocumentListView(ListView):
 
     def get_queryset(self):
         return Document.objects.filter(user_id=self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Total number of entries
+        user_entries = Entry.objects.filter(user=self.request.user).count()
+        context['user_entries'] = user_entries
+        # Total number of posts
+        user_posts = Post.objects.filter(author=self.request.user)
+        context['user_posts'] = user_posts.count()
+        # Total number of comments
+        total_comments = 0
+        for post in user_posts:
+            total_comments += int(post.comments.count())
+        context['user_comments'] = total_comments
+        # Total number of likes
+        total_likes = 0
+        for post in user_posts:
+            total_likes += int(post.likes.count())
+        context['user_likes'] = total_likes
+        context['user'] = self.request.user
+        return context
 
 
 class DocumentCreateView(SuccessMessageMixin, CreateView):
@@ -81,6 +125,27 @@ class VehicleListView(ListView):
 
     def get_queryset(self):
         return Vehicle.objects.filter(user_id=self.request.user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Total number of entries
+        user_entries = Entry.objects.filter(user=self.request.user).count()
+        context['user_entries'] = user_entries
+        # Total number of posts
+        user_posts = Post.objects.filter(author=self.request.user)
+        context['user_posts'] = user_posts.count()
+        # Total number of comments
+        total_comments = 0
+        for post in user_posts:
+            total_comments += int(post.comments.count())
+        context['user_comments'] = total_comments
+        # Total number of likes
+        total_likes = 0
+        for post in user_posts:
+            total_likes += int(post.likes.count())
+        context['user_likes'] = total_likes
+        context['user'] = self.request.user
+        return context
 
 
 class VehicleCreateView(SuccessMessageMixin, CreateView):

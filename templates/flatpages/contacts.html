@@ -11,10 +11,40 @@
     {{ flatpage.title }}
 {% endblock pageheader %}
 
-{% block breadcrumb %}
-    <li class="active"><a href="{% url 'contacts' %}"><i class="fa fa-envelope"></i> {% trans "Контакти" %}</a></li>
-{% endblock breadcrumb %}
-
 {% block content %}
-    {{ flatpage.content }}
+    <div class="main">
+				<div class="main-section">
+					<div class="login-form">
+						<h2>Send Us Some Electronic Mail</h2>
+						<form>
+						<ul>
+								 <li class="text-info">Name</li>
+								 <li><input type="text" placeholder="" required=""></li>
+								 <div class="clear"></div>
+							 </ul>
+							<ul>
+								 <li class="text-info">Company</li>
+								 <li><input type="text" placeholder="" required=""></li>
+								 <div class="clear"></div>
+							 </ul>
+							<ul>
+								 <li class="text-info">Email</li>
+								 <li><input type="text" placeholder="" required=""></li>
+								 <div class="clear"></div>
+							 </ul>
+							<ul>
+								 <li class="text-info">Phone</li>
+								 <li><input type="text" placeholder="" required=""></li>
+								 <div class="clear"></div>
+							 </ul>
+							 <ul>
+								<li class="text-info">Message</li>
+								<li><textarea></textarea></li>
+								<div class="clear"></div>
+							</ul>
+							<input type="submit" value="Send Message">
+						</form>
+					</div>
+				</div>
+			</div>
 {% endblock %}

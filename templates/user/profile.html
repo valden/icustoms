@@ -36,23 +36,27 @@
 						{{ user.username }}
 					{% endif %}
 				</h3>
-
+				
 				<ul class="list-group list-group-unbordered mb-3">
 					<li class="list-group-item">
 						<i class="fa fa-file-invoice"></i>
-						<b class="ml-1">{% trans "Декларації" %}</b> <a class="float-right">37</a>
+						<b class="ml-1">{% trans "Декларації" %}</b> 
+						<a class="float-right">{{user_entries}}</a>
 					</li>
 					<li class="list-group-item">
 						<i class="fa fa-file-alt"></i>
-						<b class="ml-1">{% trans "Публікації" %}</b> <a class="float-right">1,322</a>
+						<b class="ml-1">{% trans "Публікації" %}</b> 
+						<a class="float-right">{{user_posts}}</a>
 					</li>
 					<li class="list-group-item">
 						<i class="fa fa-comment-dots"></i>
-						<b class="ml-1">{% trans "Коментарі" %}</b> <a class="float-right">543</a>
+						<b class="ml-1">{% trans "Коментарі" %}</b> 
+						<a class="float-right">{{user_comments}}</a>
 					</li>
 					<li class="list-group-item">
 						<i class="fa fa-thumbs-up"></i>
-						<b class="ml-1">{% trans "Популярність" %}</b> <a class="float-right">13,287</a>
+						<b class="ml-1">{% trans "Популярність" %}</b> 
+						<a class="float-right">{{user_comments}}</a>
 					</li>
 				</ul>
 

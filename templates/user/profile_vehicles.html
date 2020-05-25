@@ -5,6 +5,15 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block CSS %}
+<style>
+    @media only screen and (max-width: 900px) {
+        .one{
+            display: none;
+        }
+    }
+</style>
+{% endblock CSS %}
 
 {% block profile_tabs %}
     <div class="card elevation-3">
@@ -51,8 +60,8 @@
                                             <th style="width: 40px"><i class="fa fa-ellipsis-v"></th>
                                             <th>{% trans "Марка" %}</th>
                                             <th>{% trans "Рік випуску" %}</th>
-                                            <th>{% trans "Об'єм двигуна" %}</th>
-                                            <th>{% trans "Кузов №" %}</th>
+                                            <th class="one">{% trans "Об'єм двигуна" %}</th>
+                                            <th class="one">{% trans "Кузов №" %}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -75,8 +84,8 @@
                                                 </td>
                                                 <td>{{ auto.auto_name }}</td>
                                                 <td>{{ auto.auto_year }}</td>
-                                                <td>{{ auto.auto_engine }}</td>
-                                                <td>{{ auto.auto_vin }}</td>
+                                                <td class="one">{{ auto.auto_engine }}</td>
+                                                <td class="one">{{ auto.auto_vin }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

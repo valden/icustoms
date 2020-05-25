@@ -7,6 +7,7 @@ from django.core.validators import (MaxValueValidator,
                                     MaxLengthValidator,
                                     MinLengthValidator)
 import datetime
+from django.http import request
 
 
 class User(AbstractUser):

@@ -1,0 +1,1606 @@
+<!-- templates/declaring/entry_add_form.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block CSS %}
+    <style>
+       
+        {% comment %} @font-face {
+            font-family: "Times New Roman";
+            src: url("D:\Programming\PROJECTS\Django\icustoms\static\dist\ttf\Times New Roman.ttf");
+        } {% endcomment %}
+        body {
+            font-family: "Times New Roman","sans-serif";
+        }
+        table.MsoNormalTable
+            {
+                width:680px;
+                padding:0cm 0cm 0cm 0cm;
+                margin:0cm;
+                border:none;
+                font-size:10.0pt;
+            }
+        table.MsoGoodsTable
+            {
+                width:680px;
+                padding:0cm 0cm 0cm 0cm;
+                margin:0cm;
+                border:solid 1.0pt;
+                font-size:10.0pt;
+            }
+        td.MsoGoods
+            {
+                border:solid 1.0pt;
+            }
+        p.MsoNormal, li.MsoNormal, div.MsoNormal
+            {               
+                margin:0cm 0cm 0cm 0cm;
+                padding:0cm 0cm 0cm 0cm;
+                line-height:normal;
+                font-size:11.0pt;
+            }
+    </style>
+{% endblock CSS %}
+
+{% block pageheader %}
+    {% trans "Декларування" %}
+{% endblock pageheader %}
+                  
+{% block content %}
+
+<!-- Панель інструментів -->
+
+    <hr>
+    <div class="btn-toolbar justify-content-end"
+            role="toolbar"
+            aria-label="Toolbar">
+        <div class="btn-group" role="group" aria-label="Entry toolbar">
+            <a class="btn btn-sm btn-outline-info mr-1"
+                href="{% url 'entry_list' %}"
+                title={% trans 'Перелік' %}><i class="fas fa-undo"></i>
+            </a>            
+            <a class="btn btn-sm btn-outline-success mr-1"
+                href="{% url 'entry_print' pk=entry.pk %}"
+                target="_blank"
+                role="button"
+                title={% trans 'Друкувати' %}>
+                <i class="fas fa-print"></i>
+            </a>
+            
+        </div>
+    </div>
+
+    <hr>
+
+<!-- Заголовок -->
+
+    <div align=center style="margin-top:30pt">    
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=370 vertical-align=top>
+                </td>
+                <td width=310 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:12.0pt;'>
+                            ЗАТВЕРДЖЕНО
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:12.0pt;'>
+                            постановою Кабінету Міністрів України
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:12.0pt;'>
+                            від 21 травня 2012 р. № 431
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height=10>
+                <td width=680 colspan=2 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:13.0pt;'>
+                                МИТНА ДЕКЛАРАЦІЯ
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr height=10>
+                <td width=680 colspan=2 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:13.0pt;'>
+                                для письмового декларування товарів, що переміщуються через
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr height=10>
+                <td width=680 colspan=2 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:13.0pt;'>
+                                митний кордон України громадянами для особистих, сімейних та інших
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr height=10>
+                <td width=680 colspan=2 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:13.0pt;'>
+                                потреб, не пов’язаних зі здійсненням підприємницької діяльності
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+        </table>    
+    
+    </div>
+        
+    <br>
+        
+    <div align=center>
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=680 colspan=3 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span>
+                            Заповнюється кожною особою, яка досягла 16-річного віку
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=420 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span>
+                            Потрібна відповідь позначається у відповідній рамці знаком
+                        </span>
+                    </p>
+                </td>
+                <td width=20 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            X
+                        </span>
+                    </p>
+                </td>
+                <td width=240 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=680 colspan=3 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span>
+                            Зберігається на весь період тимчасового в’їзду/виїзду 
+                            і пред’являється митним органам під час
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=680 colspan=3 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span>
+                            повернення громадянина. У разі втрати не поновлюється
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+        
+    <div align=center>
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height='25'>
+                <td width=265 colspan=2 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.direction == '0' %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}                       
+                    </p>
+                </td>
+                <td width=150 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.direction == '1' %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=215 colspan=2 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=265 vertical-align=top>
+                </td>
+                <td width=30 colspan=3 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span>
+                                в’їзд
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td width=140 vertical-align=top>
+                </td>
+                <td width=30 colspan=3 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span>
+                                виїзд
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td width=215 vertical-align=top>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+
+<!-- 1. Відомості про особу -->
+
+    <div align=center>
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0> 
+            <tr>
+                <td width=685 colspan=16 vertical-align=top>
+                    <p class=MsoNormal style='text-align:left;'>
+                        <b>
+                            <span style='font-size: 12.0pt;'>
+                                1. Відомості про особу
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=230 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.user.last_name|upper }}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=170 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.user.first_name|upper }}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=240 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.user.middle_name|upper }}
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=230 colspan=5 vertical-align=top>
+                    <p class=MsoNormal align=center style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            прізвище
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=170 colspan=5 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            ім’я
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=240 colspan=5 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            по батькові
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=230 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.user.residence.name|upper }}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=170 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.user.nationality.name|upper }}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=240 colspan=5 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            від {{ entry.passport.doc_date|date:'d.m.Y' }} №{{ entry.passport.doc_number }}
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=230 colspan=5 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            країна постійного проживання
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=170 colspan=5 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            громадянство/підданство
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=240 colspan=5 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            документ, що посвідчує особу
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=330 colspan=8 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.departure.name|upper }}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=330 colspan=8 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {{ entry.arrival.name|upper }}
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=330 colspan=8 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            з якої країни прибув (зазначається країна відправлення)
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=330 colspan=8 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:9.0pt;'>
+                            до якої країни прямує (зазначається країна призначення)
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=685 height=10 colspan=17 vertical-align=top>
+                </td>
+            </tr>
+            <tr height=25>
+                <td width=390 colspan=10 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            Зі мною прямують неповнолітні діти
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.kids_number > 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=70 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if not entry.kids_number or entry.kids_number <= 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=170 colspan=2 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=70 colspan=1 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            Кількість
+                        </span>
+                    </p>
+                </td>
+                <td width=70 colspan=2 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.kids_number > 0 %}
+                                {{ entry.kids_number }} ({{ entry.num_kids_words }})
+                            {% else %}
+                                ---
+                            {% endif %}                           
+                        </span>
+                    </p>
+                </td>
+                <td width=250 colspan=7 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=70 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=170 colspan=2 vertical-align=top>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+
+<!-- 2. Відомості про спосіб переміщення товарів  -->
+
+    <div align=center>
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=680 colspan=24 vertical-align=top>
+                    <p class=MsoNormal>
+                        <b>
+                            <span style='font-size: 12.0pt;'>
+                                2. Відомості про спосіб переміщення товарів
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr height=25>
+                <td width=220 colspan=7 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            2.1. Супроводжуваний багаж,
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=bottom>
+                </td>
+                <td width=220 colspan=7 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            2.2. Несупроводжуваний багаж
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=bottom>
+                </td>
+                <td width=220 colspan=7 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            2.3. Вантажне відправлення
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr height=25>
+                <td width=130 colspan=3 vertical-align=top>
+                    <p class=MsoNormal style='text-align:right;padding-right:5.4pt;'>
+                        <span style='font-size: 12.0pt;'>
+                            ручна поклажа
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.accamp_number > 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=30 colspan=2 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if not entry.accamp_number or entry.accamp_number <= 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=140 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.nonaccamp_number > 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=30 colspan=2 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if not entry.nonaccamp_number or entry.nonaccamp_number <= 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=90 colspan=4 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.cargo_number > 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=30 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if not entry.cargo_number or entry.cargo_number <= 0 %}
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=130 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=30 colspan=2 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=140 colspan=3 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=30 colspan=2 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+                <td width=90 colspan=4 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=30 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=110 colspan=3 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Кількість місць
+                        </span>
+                    </p>
+                </td>
+                <td width=100 colspan=4 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.accamp_number > 0 %}
+                                {{ entry.accamp_number }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=bottom>
+                </td>
+                <td width=120 colspan=3 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Кількість місць
+                        </span>
+                    </p>
+                </td>
+                <td width=100 colspan=4 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.nonaccamp_number > 0 %}
+                                {{ entry.nonaccamp_number }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=bottom>
+                </td>
+                <td width=100 colspan=3 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Кількість місць
+                        </span>
+                    </p>
+                </td>
+                <td width=90 colspan=4 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.cargo_number > 0 %}
+                                {{ entry.cargo_number }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+
+<!-- 3. Відомості про наявність товарів -->
+
+    <div align=center style="margin-bottom:30pt">
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=680 colspan=20 vertical-align=top>
+                    <p class=MsoNormal>
+                        <b>
+                            <span style='font-size: 12.0pt;'>
+                                3. Відомості про наявність товарів
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr height=25>
+                <td width=680 colspan=20 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            3.1. Пункт виключено
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr height=25>
+                <td width=580 colspan=16 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            3.2. Транспортний засіб особистого користування
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.vehicle.auto_name %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=30 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if not entry.vehicle.auto_name %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=580 colspan=16 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size: 10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=30 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size: 10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+        </table>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height=25>
+                <td width=50 colspan=1 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Марка
+                        </span>
+                    </p>
+                </td>
+                <td width=210 colspan=7 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.vehicle.auto_name %}
+                                {{ entry.vehicle.auto_name|upper }}
+                            {% else %}
+                                ---
+                            {% endif %}                            
+                        </span>
+                    </p>
+                </td>
+                <td width=80 colspan=2 vertical-align=bottom>
+                    <p class=MsoNormal style='text-align:right;'>
+                        <span style='font-size:10.0pt;'>
+                            Рік випуску
+                        </span>
+                    </p>
+                </td>
+                <td width=80 colspan=3 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.vehicle.auto_year %}
+                                {{ entry.vehicle.auto_year|upper }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+                <td width=200 colspan=5 vertical-align=bottom>
+                    <p class=MsoNormal style='text-align:right;'>
+                        <span style='font-size:10.0pt;'>
+                            Об’єм двигуна (куб.сантиметрів)
+                        </span>
+                    </p>
+                </td>
+                <td width=60 colspan=2 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.vehicle.auto_engine %}
+                                {{ entry.vehicle.auto_engine|upper }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height=25>
+                <td width=200 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Кузов № (ідентифікаційний номер)
+                        </span>
+                    </p>
+                </td>
+                <td width=180 vertical-align=bottom style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span>
+                            {% if entry.vehicle.auto_vin %}
+                                {{ entry.vehicle.auto_vin|upper }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </span>
+                    </p>
+                </td>
+                <td width=300 vertical-align=bottom>
+                </td>
+            </tr>
+        </table>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height=25>
+                <td width=285 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            Мета переміщення:
+                        </span>
+                    </p>
+                </td>
+                <td width=130 vertical-align=bottom>
+                    <p class=MsoNormal style='text-align:right;padding-right:4pt;'>
+                        <span style='font-size:10.0pt;'>
+                            тимчасове ввезення
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.purpose == '0' %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=70 vertical-align=bottom>
+                    <p class=MsoNormal style='text-align:right;padding-right:4pt;'>
+                        <span style='font-size:10.0pt;'>
+                            транзит
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.purpose == '1' %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=140 vertical-align=bottom>
+                    <p class=MsoNormal style='text-align:right;padding-right:4pt;'>
+                        <span style='font-size:10.0pt;'>
+                            зворотне вивезення
+                        </span>
+                    </p>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.purpose == '2' %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=bottom>
+                </td>
+            </tr>
+        </table>
+        <p style='font-size: 6pt;'>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>               
+            <tr>
+                <td width=680 vertical-align=bottom>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            3.3. Товари, переміщення яких через державний кордон України обмежено
+                            (здійснюється за
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr height=10>
+                <td width=680 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span style='font-size: 12.0pt;'>
+                            дозвільними
+                            документами, що видаються органами виконавчої влади) або заборонено
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr height=25>
+                <td width=595 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.limited == '1' %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=15 vertical-align=top>
+                </td>
+                <td width=25 style='border:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:center;'>
+                        {% if entry.limited == '0' %}    
+                            <span>
+                                Х
+                            </span>
+                        {% endif %}
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+            <tr>
+                <td width=595 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size: 10.0pt;'>
+                            Так
+                        </span>
+                    </p>
+                </td>
+                <td width=15 vertical-align=top>
+                </td>
+                <td width=25 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size: 10.0pt;'>
+                            Ні
+                        </span>
+                    </p>
+                </td>
+                <td width=20 vertical-align=top>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+    
+    <hr>
+
+<!-- 4. Відомості про товари -->
+    
+    <div align=center style='page-break-before:always;margin-top:30pt'>
+        
+        <!-- Заголовок -->
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=685 vertical-align=top>
+                    <p class=MsoNormal align=center style='text-align:center;'>
+                        <i>
+                            <span>
+                                Зворотний бік
+                            </span>
+                        </i>
+                    </p>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td width=685 vertical-align=top>
+                    <p class=MsoNormal style='text-align:justify;line-height:80%'>
+                        <b>
+                            <span style='font-size:12.0pt;line-height:80%;'>
+                                4. Відомості про товари, що підлягають обов’язковому письмовому декларуванню
+                                та/або оподаткуванню митними платежами, товари, переміщення яких через
+                                державний кордон України заборонено або здійснюється за дозвільними
+                                документами, що видаються органами виконавчої влади, та інші товари, що
+                                декларуються письмово за бажанням громадянина або на вимогу митного органу
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+        
+    <div align=center>
+
+        <!-- Таблиця товарів -->
+        
+        <table class=MsoGoodsTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td class=MsoGoods width=80 rowspan=2>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Порядковий
+                        </span>
+                        </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            номер
+                        </span>
+                    </p>
+                </td>
+                <td class=MsoGoods width=310 rowspan=2>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Найменування та інші характерні ознаки
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            товару, номер і дата видачі дозвільного
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            документа та орган, що його видав
+                        </span>
+                    </p>
+                </td>
+                <td class=MsoGoods width=180 colspan=2>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Вага/кількість
+                        </span>
+                    </p>
+                </td>
+                <td class=MsoGoods width=110 rowspan=2>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            Вартість у
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            валюті
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            України
+                        </span>
+                    </p>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            або в євро
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td class=MsoGoods width=90>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            цифрами
+                        </span>
+                    </p>
+                </td>
+                <td class=MsoGoods width=90>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <span style='font-size:10.0pt;'>
+                            словами
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            {% for item in entry.get_goods %}
+                <tr>
+                    <td class=MsoGoods width=80 vertical-align=top>
+                        <p class=MsoNormal style='text-align:center;'>
+                            <span style='font-size:10.0pt;'>
+                                {{ forloop.counter }}
+                            </span>
+                        </p>
+                    </td>
+                    <td class=MsoGoods width=310 vertical-align=center>                                      
+                        <p class=MsoNormal style='text-align:left;padding-left:5.4pt;'>
+                            <span style='font-size:10.0pt;word-wrap:break-word;'>
+                                {{ item.split_goods_name.0 }}
+                            </span>
+                        </p>                                       
+                    </td>
+                    <td class=MsoGoods width=90 vertical-align=top>
+                        <p class=MsoNormal style='text-align:center;'>
+                            <span style='font-size:10.0pt;'>
+                                {{ item.goods_number }} 
+                                {% if item.goods_unit == '0' %}
+                                    кг.
+                                {% elif item.goods_unit == '1' %}
+                                    л.
+                                {% elif item.goods_unit == '2' %}
+                                    шт.
+                                {% endif %}
+                            </span>
+                        </p>
+                    </td>
+                    <td class=MsoGoods width=90 vertical-align=top>                           
+                        <p class=MsoNormal style='text-align:center;'>
+                            <span style='font-size:10.0pt;'>                                
+                                {{ item.split_goods_number.0 }} 
+                            </span>
+                        </p>
+                    </td>
+                    <td class=MsoGoods width=110 vertical-align=top>
+                        <p class=MsoNormal style='text-align:center;'>
+                            <span style='font-size:10.0pt;'>
+                                {{ item.goods_value }} 
+                                {% if item.goods_currency == '0' %}
+                                    грн.
+                                {% elif item.goods_currency == '1' %}
+                                    євро
+                                {% endif %}
+                            </span>
+                        </p>
+                    </td>
+                </tr>
+                {% for i, j in item.zip_goods %}
+                {% if forloop.counter >= 2 %}             
+                    <tr>
+                        <td class=MsoGoods width=80 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=310 vertical-align=center>                                      
+                            <p class=MsoNormal style='text-align:left;padding-left:5.4pt;'>
+                                <span style='font-size:10.0pt;word-wrap:break-word;'>
+                                    {{ i }}
+                                </span>
+                            </p>                                       
+                        </td>
+                        <td class=MsoGoods width=90 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                    
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=90 vertical-align=top>                           
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                    {{ j }}
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=110 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                    
+                                </span>
+                            </p>
+                        </td>
+                    </tr>   
+                {% endif %}
+                {% endfor %}
+            {% endfor %}  
+            {% with ''|center:entry.total_empty_rows as range %}
+                {% for r in range %}    
+                    <tr>
+                        <td class=MsoGoods width=80 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                    <o:p>&nbsp;</o:p>
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=310 vertical-align=center>                                      
+                            <p class=MsoNormal style='text-align:left;padding-left:5.4pt;'>
+                                <span style='font-size:10.0pt;word-wrap:break-word;'>
+                                    <o:p>&nbsp;</o:p>
+                                </span>
+                            </p>                                       
+                        </td>
+                        <td class=MsoGoods width=90 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>     
+                                    <o:p>&nbsp;</o:p>
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=90 vertical-align=top>                           
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>
+                                    <o:p>&nbsp;</o:p>
+                                </span>
+                            </p>
+                        </td>
+                        <td class=MsoGoods width=110 vertical-align=top>
+                            <p class=MsoNormal style='text-align:center;'>
+                                <span style='font-size:10.0pt;'>  
+                                    <o:p>&nbsp;</o:p>                                  
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endwith %}
+            <tr>
+                <td class=MsoGoods width=390 colspan=2 vertical-align=top>
+                    <p class=MsoNormal style='text-align:justify;padding-left:5.4pt;'>
+                        <span style='font-size:10.0pt;'>
+                            Загальна вага/кількість та вартість (всього):
+                        </span>
+                    </p>
+                </td>
+                <td class=MsoGoods width=90 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:10.0pt;'>
+                                {% if not entry.compare_goods_units is None %}
+                                    {{ entry.goods_total_number }}
+                                {% endif %}
+                                {% if entry.compare_goods_units  == '0' %}
+                                    кг.
+                                {% elif entry.compare_goods_units  == '1' %}
+                                    л.
+                                {% elif entry.compare_goods_units  == '2' %}
+                                    шт.
+                                {% endif %}
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td class=MsoGoods width=90 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:10.0pt;'>
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td class=MsoGoods width=110 vertical-align=top>
+                    <p class=MsoNormal style='text-align:center;'>
+                        <b>
+                            <span style='font-size:10.0pt;'>
+                                {% if not entry.compare_goods_currencies is None %}
+                                    {{ entry.goods_total_value }}
+                                {% endif %}
+                                {% if entry.compare_goods_currencies  == '0' %}
+                                    грн.
+                                {% elif entry.compare_goods_currencies  == '1' %}
+                                    євро
+                                {% endif %}
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>       
+    <br>
+
+<!-- Дата та підпис -->
+
+    <div align=center>
+        
+        <table class=MsoNormalTable cellspacing=0 cellpadding=0>
+            <tr>
+                <td width=685 colspan=8 vertical-align=top>
+                    <p class=MsoNormal style='text-align:justify;'>
+                        <b>
+                            <span style='font-size:12.0pt;'>
+                                Мені відомо, що повідомлення у митній декларації 
+                                недостовірних відомостей тягне за собою відповідальність 
+                                згідно із законом.
+                            </span>
+                        </b>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=685 colspan=8 vertical-align=top>
+                    <p class=MsoNormal style='text-align:justify;'>
+                        <span style='font-size:12.0pt;'>
+                            <o:p>&nbsp;</o:p>
+                        </span>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td width=15 nowrap vertical-align=top>
+                    <p class=MsoNormal align=right style='text-align:right;'>
+                        <span style='font-size:10.0pt;'>
+                            &quot;
+                        </span>
+                    </p>
+                </td>
+                <td width=40 vertical-align=top style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:justify;'>
+                        <b>
+                            <span style='font-size:12.0pt;'>
+                                <o:p>&nbsp;</o:p>
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td width=15 nowrap vertical-align=top>
+                    <p class=MsoNormal align=right style='text-align:left;'>
+                        <span style='font-size:10.0pt;'>
+                            &quot;
+                        </span>
+                    </p>
+                </td>
+                <td width=149 vertical-align=top style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:justify;'>
+                        <b>
+                            <span style='font-size:12.0pt;'>
+                                <o:p>&nbsp;</o:p>
+                            </span>
+                        </b>
+                    </p>
+                </td>
+                <td width=38 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span style='font-size:10.0pt;'>
+                            р.
+                        </span>
+                    </p>
+                </td>
+                <td width=151 vertical-align=top>
+                    <p class=MsoNormal>
+                        <span>
+                            <o:p>&nbsp;</o:p>
+                        </span>
+                    </p>
+                </td>
+                <td width=123 vertical-align=top>
+                    <p class=MsoNormal align=right style='text-align:right;'>
+                        <span style='font-size:10.0pt;'>
+                            Особистий підпис
+                        </span>
+                    </p>
+                </td>
+                <td width=149 vertical-align=top style='border-bottom:solid 1.0pt;'>
+                    <p class=MsoNormal style='text-align:justify;'>
+                        <span style='font-size:12.0pt;'>
+                            <o:p>&nbsp;</o:p>
+                        </span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+        
+    <br>      
+    <br>
+
+<!-- Для службових позначок -->
+
+    <div align=center>
+        
+        <table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0 width=680
+         style='width:18.0cm;border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;
+         mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+         <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+          <td width=187 vertical-align=top style='width:140.1pt;border:none;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'>Для
+          службових позначок<o:p></o:p></span></p>
+          </td>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:1'>
+          <td width=187 rowspan=6 style='width:140.1pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+          text-align:center;line-height:normal'><span style='font-size:12.0pt;
+          font-family:"Times New Roman","serif";mso-fareast-font-family:"Times New Roman";
+          mso-fareast-language:RU'>М.П.<o:p></o:p></span></p>
+          </td>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:2'>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:3'>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:4'>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:5'>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:6'>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:7'>
+          <td width=187 vertical-align=top style='width:140.1pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:8'>
+          <td width=187 vertical-align=top style='width:140.1pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+         <tr style='mso-yfti-irow:9;mso-yfti-lastrow:yes'>
+          <td width=187 vertical-align=top style='width:140.1pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+          <td width=499 vertical-align=top style='width:373.9pt;border:none;border-bottom:solid windowtext 1.0pt;
+          mso-border-top-alt:solid windowtext .5pt;mso-border-top-alt:solid windowtext .5pt;
+          mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+          <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+          justify;line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif";
+          mso-fareast-font-family:"Times New Roman";mso-fareast-language:RU'><o:p>&nbsp;</o:p></span></p>
+          </td>
+         </tr>
+        </table>
+        
+    </div>
+        
+    <br>
+
+{% endblock content %}
