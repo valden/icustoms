@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
 
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     'django_filters',
     'ckeditor',
     'feedparser',
-    'whitenoise.runserver_nostatic',
 
     # Local apps
     'user.apps.UserConfig',
