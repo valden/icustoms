@@ -17,7 +17,7 @@ SECRET_KEY = 'ys4+=!h@v)r$g==vsq107#&kkkp$asf^50&iu)gtwxwps#=e*u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_filters',
     'ckeditor',
     'feedparser',
+    'whitenoise.runserver_nostatic',
 
     # Local apps
     'user.apps.UserConfig',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,6 +140,7 @@ DATETIME_FORMAT = 'd.m.Y H:i'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (Users images and etc.)
 
