@@ -190,7 +190,7 @@ EMAIL_HOST = 'mail.icustoms.info'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'info@icustoms.info'
 EMAIL_HOST_PASSWORD = 'Mi4Car6p'
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True
 
 
 # CRISPY FORMS
