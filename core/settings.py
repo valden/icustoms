@@ -16,7 +16,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'ys4+=!h@v)r$g==vsq107#&kkkp$asf^50&iu)gtwxwps#=e*u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -160,6 +160,23 @@ AUTH_USER_MODEL = 'user.User'
 
 LOGIN_REDIRECT_URL = '/'
 
+# LOGGING
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
 
 # ALLAUTH SETTINGS
 
