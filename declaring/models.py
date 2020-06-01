@@ -111,7 +111,7 @@ class Entry(models.Model):
             print(item.goods_value)
             goods_name_rows = math.ceil(len(item.goods_name) / 30)
             goods_number_rows = math.ceil(
-                len(num2words(int(item.goods_number), lang='uk')) / 15)
+                len(num2words(int(item.goods_number), lang='uk')) / 12)
             total_goods_rows = total_goods_rows + \
                 max(goods_name_rows, goods_number_rows)
         return 15 - total_goods_rows
@@ -185,7 +185,7 @@ class Goods(models.Model):
 
     def goods_rows_number(self):
         name_rows = math.ceil(len(self.goods_name) / 30)
-        number_rows = math.ceil(len(self.numinwords()) / 15)
+        number_rows = math.ceil(len(self.numinwords()) / 12)
         return max(name_rows, number_rows)
 
     def split_goods_name(self):
@@ -193,8 +193,8 @@ class Goods(models.Model):
                 for i in range(0, len(self.goods_name), 30)]
 
     def split_goods_number(self):
-        return [(self.numinwords()[i:i + 15])
-                for i in range(0, len(self.numinwords()), 15)]
+        return [(self.numinwords()[i:i + 12])
+                for i in range(0, len(self.numinwords()), 12)]
 
     def zip_goods(self):
         return zip_longest(self.split_goods_name(), self.split_goods_number(), fillvalue='')
