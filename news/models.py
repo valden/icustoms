@@ -7,15 +7,14 @@ class News(models.Model):
     url = models.URLField()
     rss_url = models.URLField()
     date_format = models.CharField(max_length=255)
-    tags = models.CharField(max_length=255, blank=True, help_text='Enter tags for search using whitespaces between')
+    tags = models.CharField(max_length=255, blank=True,
+                            help_text='Enter tags for search using whitespaces between')
 
     class Meta:
-        verbose_name = _('News')
-        verbose_name_plural = _('News')
+        verbose_name = _('Джерело новин')
+        verbose_name_plural = _('Джерела новин')
         ordering = ('publisher',)
 
     def __str__(self):
         return self.publisher
-    
-
 

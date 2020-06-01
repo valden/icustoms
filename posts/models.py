@@ -145,7 +145,7 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name = _('Коментар')
-        verbose_name_plural = _('Коментар')
+        verbose_name_plural = _('Коментарі')
         ordering = ('-created',)
 
     def __str__(self):

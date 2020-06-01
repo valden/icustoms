@@ -96,6 +96,11 @@ class Entry(models.Model):
         null=True,
         blank=False)
 
+    class Meta:
+        verbose_name = _('Декларація')
+        verbose_name_plural = _('Декларації')
+        ordering = ('-update_date',)
+
     def num_kids_words(self):
         return num2words(self.kids_number, lang='uk')
 
@@ -179,6 +184,11 @@ class Goods(models.Model):
         default=None,
         null=True,
         blank=True)
+
+    class Meta:
+        verbose_name = _('Товар')
+        verbose_name_plural = _('Товари')
+        ordering = ('-entry',)
 
     def numinwords(self):
         return num2words(self.goods_number, lang='uk')

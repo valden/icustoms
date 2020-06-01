@@ -20,7 +20,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-DISABLE_COLLECTSTATIC = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,9 +52,9 @@ INSTALLED_APPS = [
     # Local apps
     'user.apps.UserConfig',
     'contacts',
-    'news',
+    'news.apps.NewsConfig',
     'posts.apps.PostsConfig',
-    'declaring',
+    'declaring.apps.DeclaringConfig',
 
 ]
 
@@ -161,7 +160,12 @@ AUTH_USER_MODEL = 'user.User'
 
 LOGIN_REDIRECT_URL = '/'
 
+
+# ALLAUTH SETTINGS
+
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
 # Provider specific settings
