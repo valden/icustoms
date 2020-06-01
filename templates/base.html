@@ -36,15 +36,20 @@
 				<div class="content-header">
 					<div class="container-fluid">
 						<div class="row mb-2">
-							<div class="col-sm-6">
+							<div class="col-sm-12">
 								<h1 class="m-0 text-dark">
 									{% block pageheader %}
                             		{% endblock pageheader %}
 								</h1>
+								<div class="ribbon-wrapper">
+									<div class="ribbon bg-danger">
+										{% trans "ТЕСТ" %}
+									</div>
+								</div>
 							</div>
 							<!-- /.col -->
-							<div class="col-sm-6">
-							</div>
+							{% comment %} <div class="col-sm-6">
+							</div> {% endcomment %}
 							<!-- /.col -->
 						</div>
 						<!-- /.row -->
