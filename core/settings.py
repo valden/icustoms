@@ -203,12 +203,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # EMAIL SETTINGS
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.icustoms.info'
-EMAIL_PORT = 26
-EMAIL_HOST_USER = 'info@icustoms.info'
-EMAIL_HOST_PASSWORD = 'Mi4Car6p'
-# EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'info@icustoms.info'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'agmorev@gmail.com'
+EMAIL_HOST_PASSWORD = 'mora2018'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'agmorev@gmail.com'
 
 
 # CRISPY FORMS
