@@ -38,8 +38,8 @@ class ContactFormView(FormView):
             else:
                 contact_name = form.cleaned_data.get('name')
                 contact_email = form.cleaned_data.get('email')
-            contact_message = "{name}: ".format(
-                name=contact_name)
+            contact_message = "{name} <{email}>: ".format(
+                name=contact_name, email=contact_email)
             contact_message += "<br>{0}".format(
                 SafeString(form.cleaned_data.get('message')))
             subject = form.cleaned_data.get('subject')
