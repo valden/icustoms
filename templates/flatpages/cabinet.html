@@ -1,0 +1,171 @@
+<!-- templates/flatpages/maps.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block pageheader %}
+  {% trans "Електронний кабінет" %}
+{% endblock pageheader %}
+                  
+{% block content %}
+  
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-purple">
+				<div class="inner">
+					<h4>{% trans "ПРОФІЛЬ" %}</h4>
+					<p>{% trans "Користувач" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-user"></i>
+				</div>
+				<a href="{% url 'profile' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+	</div>
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-info">
+				<div class="inner">
+					<h4>{% trans "ДЕКЛАРУВАННЯ" %}</h4>
+					<p>{% trans "Громадяни" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-users"></i>
+				</div>
+				<a href="{% url 'entry_list' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+		<!-- ./col -->
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-success">
+				<div class="inner">
+					<h4>{% trans "ДЕКЛАРУВАННЯ" %}</h4>
+					<p>
+						{% trans "Валюта" %}
+						<span class="right badge badge-danger">
+							{% trans "незабаром" %}
+						</span>
+					</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-hryvnia"></i>
+				</div>
+				<a href="#" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+        </div>
+        <!-- ./col -->
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-warning">
+				<div class="inner">
+					<h4>{% trans "ДЕКЛАРУВАННЯ" %}</h4>
+					<p>
+						{% trans "Підприємства" %}
+						<span class="right badge badge-danger">
+							{% trans "незабаром" %}
+						</span>
+					</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-building"></i>
+				</div>
+				<a href="#" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+		<!-- ./col -->          
+    </div>
+
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-primary">
+				<div class="inner">
+					<h4>{% trans "ВАРТІСТЬ І ПЛАТЕЖІ" %}</h4>
+					<p>{% trans "Калькулятори" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-calculator"></i>
+				</div>
+				<a href="{% url 'calcs' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+	</div>
+
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-danger">
+				<div class="inner">
+					<h4>{% trans "РИЗИКИ" %}</h4>
+					<p>{% trans "Визначення можливих ризиків" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-exclamation-triangle"></i>
+				</div>
+				<a href="#" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+	</div>
+
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-olive">
+				<div class="inner">
+					<h4>{% trans "МАПА" %}</h4>
+					<p>{% trans "Мапи митних органів" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-map-marked-alt"></i>
+				</div>
+				<a href="{% url 'maps' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+	</div>
+
+	<div class="row">
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-orange">
+				<div class="inner">
+					<h4>{% trans "ДОВІДНИКИ" %}</h4>
+					<p>
+						{% trans "Митні органи" %}
+						<span class="right badge badge-danger">
+							{% trans "незабаром" %}
+						</span>
+					</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-landmark"></i>
+				</div>
+				<a href="#" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+		<div class="col-lg-3 col-12">
+			<!-- small box -->
+			<div class="small-box bg-secondary">
+				<div class="inner">
+					<h4>{% trans "ДОВІДНИКИ" %}</h4>
+					<p>{% trans "УКТ ЗЕД" %}</p>
+				</div>
+				<div class="icon">
+					<i class="fas fa-barcode"></i>
+				</div>
+				<a href="{% url 'uktzed' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+			</div>
+		</div>
+        <!-- ./col -->
+	</div>
+
+{% endblock %}

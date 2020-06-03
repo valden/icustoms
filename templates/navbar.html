@@ -13,7 +13,7 @@
             ></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{% url 'home' %}" class="nav-link">{% trans "Про проект" %}</a>
+            <a href="{% url 'about' %}" class="nav-link">{% trans "Про проект" %}</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{% url 'contacts' %}" class="nav-link">{% trans "Контакти" %}</a>
@@ -176,6 +176,15 @@
                 >
             </div>
         </li>
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a
+                    class="nav-link"
+                    href="{% url 'cabinet' %}"
+                    title={% trans "Кабінет" %}>
+                    <i class="fas fa-briefcase"></i></a>
+            </li>
+        {% endif %}
         <li class="nav-item">
             <a
                 class="nav-link"

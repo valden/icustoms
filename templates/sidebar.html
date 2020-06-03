@@ -104,6 +104,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'contacts' %}" class="nav-link">
+                        <i class="nav-icon fas fa-link"></i>
+                        <p>
+                            {% trans "Контакти" %}
+                        </p>
+                    </a>
+                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-header">
                         {% trans "КАБІНЕТ" %}
@@ -128,14 +136,14 @@
                             <li class="nav-item">
                                 <a href="{% url 'entry_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
-                                <p>{% trans "МД (громадяни)" %}</p>
+                                <p>{% trans "Громадяни" %}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-hryvnia"></i>
                                 <p>
-                                    {% trans "Декларація ТПВ" %}
+                                    {% trans "Валюта" %}
                                     <span class="right badge badge-danger">
                                         {% trans "незабаром" %}
                                     </span>
@@ -146,7 +154,7 @@
                                 <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-building"></i>
                                 <p>
-                                    {% trans "МД (підприємства)" %}
+                                    {% trans "Підприємства" %}
                                     <span class="right badge badge-danger">
                                         {% trans "незабаром" %}
                                     </span>
@@ -155,24 +163,23 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="{% url 'calcs' %}" class="nav-link">
-                            <i class="nav-icon fas fa-calculator"></i>
-                            <p>
-                                {% trans "Калькулятори" %}
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+
+                    <li class="nav-item has-treeview">
+                        <a href="" class="nav-link">
                             <i class="nav-icon fas fa-money-check-alt"></i>
                             <p>
-                                {% trans "Вартість" %}
-                                <span class="right badge badge-danger">
-                                    {% trans "незабаром" %}
-                                </span>
+                                {% trans "Вартість і платежі" %}
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'calcs' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-calculator"></i>
+                                    <p>{% trans "Калькулятори" %}</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
@@ -186,26 +193,40 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{% url 'maps' %}" class="nav-link">
                             <i class="nav-icon fas fa-map-marked-alt"></i>
                             <p>
                                 {% trans "Мапа" %}
-                                <span class="right badge badge-danger">
-                                    {% trans "незабаром" %}
-                                </span>
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    <li class="nav-item has-treeview">
+                        <a href="" class="nav-link">
                             <i class="nav-icon fa fa-book"></i>
                             <p>
                                 {% trans "Довідники" %}
-                                <span class="right badge badge-danger">
-                                    {% trans "незабаром" %}
-                                </span>
+                                <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-landmark"></i>
+                                <p>
+                                    {% trans "Митні органи" %}
+                                    <span class="right badge badge-danger">
+                                        {% trans "незабаром" %}
+                                    </span>
+                                </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'uktzed' %}" class="nav-link">
+                                <i class="nav-icon fas fa-barcode"></i>
+                                <p>{% trans "УКТЗЕД" %}</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 {% endif %}
                 <li class="nav-header">

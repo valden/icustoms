@@ -1,0 +1,23 @@
+<!-- templates/flatpages/maps.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block pageheader %}
+  {% trans "Мапа митної інфраструктури" %}
+{% endblock pageheader %}
+                  
+{% block content %}
+  
+	<iframe src="https://www.google.com/maps/d/u/1/embed?mid=1Vz9mc94JHldokaKQezwYf2aTYA0_-jl7" width="100%" height="600"></iframe>
+	<br>
+	<p><i><small>*Джерело: офіційний сайт Державної митної служби України <a href='http://www.customs.gov.ua/'>http://www.customs.gov.ua</a></small></i></p>
+	<br>
+	<h5>На мапі позначені пункти пропуску на кордоні:</h5>
+	<h5>– закриті – червоним;</h5>
+	<h5>– відкриті – зеленим.</h5>
+	<br>
+	<h5><b>Зверніть увагу: </b>деякі пункти пропуску мають обмеження у пішохідному сполученні.</h5>	
+
+{% endblock %}
