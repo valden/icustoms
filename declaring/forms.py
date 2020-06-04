@@ -24,6 +24,14 @@ class VehicleModelChoiceField(forms.ModelChoiceField):
 
 class EntryForm(forms.ModelForm):
 
+    POINTS = ((
+        'п/п "Кроковець" Львівська митниця',
+        'п/п "Могилів-Подільський" Вінницька митниця'))
+    border_point = forms.ChoiceField(
+        label=_('Пункт пропуску'),
+        widget=forms.Select(choices=POINTS),
+        required=False
+    )
     passport = DocumentModelChoiceField(
         label=_('Документ, що посвідчує особу'),
         queryset=Document.objects.none(),
@@ -42,8 +50,8 @@ class EntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = (
-
             'direction',
+            'border_point',
             'passport',
             'departure',
             'arrival',
@@ -84,6 +92,16 @@ class EntryForm(forms.ModelForm):
             Fieldset(
                 "",
                 InlineRadios('direction')
+            ),
+            Fieldset(
+                "",
+                Field(
+                    'border_point',
+                    title=_(
+                        '''Заповнюється для інформування про ситуацію в пункті пропуску, через який планується перетин кордону'''
+                    ),
+                    disabled=True
+                )
             ),
             Fieldset(
                 _('1. Відомості про особу'),
