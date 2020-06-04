@@ -157,17 +157,12 @@
 			<div class="small-box bg-orange">
 				<div class="inner">
 					<h4>{% trans "ДОВІДНИКИ" %}</h4>
-					<p>
-						{% trans "Митні органи" %}
-						<span class="right badge badge-danger">
-							{% trans "незабаром" %}
-						</span>
-					</p>
+					<p>{% trans "Митні органи" %}</p>
 				</div>
 				<div class="icon">
 					<i class="fas fa-landmark"></i>
 				</div>
-				<a href="#" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
+				<a href="{% url 'bpoints_list' %}" class="small-box-footer">{% trans "Перейти" %} <i class="fas fa-arrow-circle-right"></i></a>
 			</div>
 		</div>
         <!-- ./col -->

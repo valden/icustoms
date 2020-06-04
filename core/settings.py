@@ -16,7 +16,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'ys4+=!h@v)r$g==vsq107#&kkkp$asf^50&iu)gtwxwps#=e*u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'ckeditor',
     'feedparser',
+    'import_export',
 
     # Local apps
     'user.apps.UserConfig',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'posts.apps.PostsConfig',
     'declaring.apps.DeclaringConfig',
+    'deskbooks.apps.DeskbooksConfig',
 
 ]
 
@@ -162,9 +164,11 @@ LOGIN_REDIRECT_URL = '/'
 
 # ALLAUTH SETTINGS
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 
 # Provider specific settings

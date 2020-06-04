@@ -3,6 +3,7 @@ from django.forms.formsets import TOTAL_FORM_COUNT
 from django.conf import settings
 from .models import Entry, Goods
 from user.models import Document, Vehicle
+from deskbooks.models import BorderPoint
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Button, ButtonHolder, Div, Field, Fieldset, HTML, Layout, MultiField, Row, Submit
 from crispy_forms.bootstrap import Accordion, AccordionGroup, AppendedText, FormActions, InlineRadios
@@ -10,6 +11,11 @@ from django.forms.models import BaseInlineFormSet, formset_factory, inlineformse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from datetime import datetime
+
+
+class BorderModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, object):
+        return "%s | %s" % (object.region, object.ukr)
 
 
 class DocumentModelChoiceField(forms.ModelChoiceField):
@@ -24,12 +30,11 @@ class VehicleModelChoiceField(forms.ModelChoiceField):
 
 class EntryForm(forms.ModelForm):
 
-    POINTS = ((
-        'п/п "Кроковець" Львівська митниця',
-        'п/п "Могилів-Подільський" Вінницька митниця'))
-    border_point = forms.ChoiceField(
+    border_point = BorderModelChoiceField(
         label=_('Пункт пропуску'),
-        widget=forms.Select(choices=POINTS),
+        queryset=BorderPoint.objects.all(),
+        empty_label=_('Оберіть пункт пропуску...'),
+        widget=forms.Select(),
         required=False
     )
     passport = DocumentModelChoiceField(
@@ -99,8 +104,7 @@ class EntryForm(forms.ModelForm):
                     'border_point',
                     title=_(
                         '''Заповнюється для інформування про ситуацію в пункті пропуску, через який планується перетин кордону'''
-                    ),
-                    disabled=True
+                    )
                 )
             ),
             Fieldset(

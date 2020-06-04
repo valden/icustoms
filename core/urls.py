@@ -19,6 +19,7 @@ urlpatterns = [
     path('news/', include('news.urls')),
     path('forum/', include('posts.urls')),
     path('declaring/', include('declaring.urls')),
+    path('deskbooks/', include('deskbooks.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
