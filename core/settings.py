@@ -1,4 +1,3 @@
-import dj_database_url
 import os
 from django.contrib.messages import constants as messages
 
