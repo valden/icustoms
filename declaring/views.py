@@ -108,26 +108,6 @@ class EntryDeleteView(SuccessMessageMixin, DeleteView):
         return self.delete(*args, **kwargs)
 
 
-# class EntryPdfView(DetailView):
-#     """Display a selected entry in pdf format"""
-#     model = Entry
-#     template_name = 'declaring/entry_form.html'
-
-#     def get_success_url(self):
-#         return reverse('entry_pdf', kwargs={'pk': self.object.pk})
-
-#     def get(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         Entry.objects.filter(pk=self.object.pk)
-#         context = self.get_context_data(object=self.object)
-#         return self.render_to_response(context)
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(EntryPdfView, self).get_context_data(**kwargs)
-    #     context['entry'] = Entry.objects.filter(id=self.object.pk)
-    #     return context
-
-
 class EntryPreView(DetailView):
     model = Entry
     template_name = 'declaring/entry_preview.html'

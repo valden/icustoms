@@ -114,7 +114,7 @@ class Entry(models.Model):
         total_goods_rows = 0
         for item in self.get_goods():
             print(item.goods_value)
-            goods_name_rows = math.ceil(len(item.goods_name) / 30)
+            goods_name_rows = math.ceil(len(item.goods_name) / 45)
             goods_number_rows = math.ceil(
                 len(num2words(int(item.goods_number), lang='uk')) / 12)
             total_goods_rows = total_goods_rows + \
@@ -194,13 +194,13 @@ class Goods(models.Model):
         return num2words(self.goods_number, lang='uk')
 
     def goods_rows_number(self):
-        name_rows = math.ceil(len(self.goods_name) / 30)
+        name_rows = math.ceil(len(self.goods_name) / 45)
         number_rows = math.ceil(len(self.numinwords()) / 12)
         return max(name_rows, number_rows)
 
     def split_goods_name(self):
-        return [(self.goods_name[i:i + 30])
-                for i in range(0, len(self.goods_name), 30)]
+        return [(self.goods_name[i:i + 45])
+                for i in range(0, len(self.goods_name), 45)]
 
     def split_goods_number(self):
         return [(self.numinwords()[i:i + 12])
