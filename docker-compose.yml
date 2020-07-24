@@ -7,11 +7,15 @@
         - POSTGRES_DB=icustoms
         - POSTGRES_USER=icadmin
         - POSTGRES_PASSWORD=test11
+        - PGDATA=/var/lib/postgresql/data/pgdata
+      volumes:
+        - /opt/icustomsdata/db:/var/lib/postgresql/data
     web:
       build: .
       command: bash -c "python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"
       volumes:
         - .:/code
+        - /opt/icustomsdata/static:/static
       ports:
         - "8000:8000"
       depends_on:
