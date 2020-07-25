@@ -1,3 +1,7 @@
+# Setup docker && docker-compose
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+
+
 ## Create dirs for persistent data
 sudo mkdir /opt/icustomsdata
 sudo mkdir /opt/icustomsdata/db
@@ -17,4 +21,6 @@ sudo docker-compose run web bash -c "python manage.py shell" .
 # fix data inconsistency in /static/datadump.json
 #   put result into /static/_datadump.json
 sudo docker-compose run web bash -c "python manage.py loaddata /static/_datadump.json" .
+
+docker-compose up
 
